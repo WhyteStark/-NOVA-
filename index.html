@@ -251,13 +251,22 @@ function selectBundle(name, price) {
       return;
     }
 
-    alert(
-      "NOVA\n\nNetwork: " +
-      network +
-      "\nPhone: " +
-      phone +
-      "\n\nPayment system coming next."
-    );
+    if (!selectedBundle) {
+  alert("Please select a data bundle first.");
+  return;
+}
+
+alert(
+  "NOVA\n\n" +
+  "Network: " + network +
+  "\n" +
+  "Phone: " + phone +
+  "\n" +
+  "Bundle: " + selectedBundle.name +
+  "\n" +
+  "Price: ₦" + selectedBundle.price.toLocaleString() +
+  "\n\nPayment system coming next."
+);
   }
 </script>
 
