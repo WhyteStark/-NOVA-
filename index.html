@@ -8,342 +8,233 @@
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
     }
 
     body {
-      margin: 0;
-      background: #f5f7fb;
-      color: #111827;
+      background: #0a0a0a;
+      color: white;
+      min-height: 100vh;
     }
 
-    .header {
-      background: #111827;
-      color: white;
-      padding: 22px;
+    header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #222;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #4ade80;
+    }
+
+    .hero {
+      padding: 45px 20px 30px;
       text-align: center;
     }
 
-    .header h1 {
-      margin: 0;
-      font-size: 28px;
+    .hero h1 {
+      font-size: 38px;
+      margin-bottom: 12px;
     }
 
-    .header p {
-      margin: 6px 0 0;
-      color: #cbd5e1;
+    .hero p {
+      color: #999;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .container {
-      max-width: 500px;
-      margin: 25px auto;
-      padding: 0 18px;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
     }
 
     .card {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
+      background: #111;
+      border: 1px solid #242424;
+      border-radius: 18px;
+      padding: 22px;
       margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     }
 
     .card h2 {
-      margin-top: 0;
-      font-size: 20px;
+      font-size: 18px;
+      margin-bottom: 18px;
     }
 
-    .networks {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    label {
+      display: block;
+      color: #aaa;
+      margin-bottom: 8px;
+      font-size: 14px;
     }
 
-    .network {
-      padding: 16px;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      background: white;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .network.selected {
-      border-color: #111827;
-      background: #111827;
+    select,
+    input {
+      width: 100%;
+      padding: 15px;
+      background: #080808;
       color: white;
-    }
-
-    .bundles {
-      display: grid;
-      gap: 10px;
+      border: 1px solid #333;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 15px;
     }
 
     .bundle {
       display: flex;
       justify-content: space-between;
-      padding: 15px;
-      border: 2px solid #e5e7eb;
+      align-items: center;
+      background: #0b0b0b;
+      border: 1px solid #292929;
+      padding: 16px;
       border-radius: 12px;
-      background: white;
+      margin-bottom: 10px;
     }
 
-    .bundle.selected {
-      border-color: #111827;
-      background: #f1f5f9;
-    }
-
-    .bundle-name,
-    .bundle-price {
-      font-weight: bold;
-    }
-
-    .phone-input {
-      width: 100%;
-      padding: 15px;
-      border: 2px solid #e5e7eb;
-      border-radius: 10px;
+    .bundle strong {
       font-size: 16px;
     }
 
-    .buy-button {
-      width: 100%;
-      padding: 17px;
-      border: none;
-      border-radius: 12px;
-      background: #111827;
-      color: white;
-      font-size: 17px;
+    .price {
+      color: #4ade80;
       font-weight: bold;
     }
 
-    .buy-button:disabled {
-      background: #9ca3af;
-    }
-
-    .summary {
-      background: #f1f5f9;
-      padding: 15px;
+    button {
+      width: 100%;
+      padding: 16px;
+      border: none;
       border-radius: 12px;
-      margin-bottom: 15px;
+      background: white;
+      color: black;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .hidden {
-      display: none;
+    button:hover {
+      opacity: 0.85;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .note {
+      color: #777;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 12px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>NOVA</h1>
-    <p>Affordable data, made simple.</p>
+<header>
+  <div class="logo">NOVA</div>
+  <div class="status">● ONLINE</div>
+</header>
+
+<section class="hero">
+  <h1>Buy Data. Simply.</h1>
+  <p>Fast, affordable data bundles.<br>Choose your network and get connected.</p>
+</section>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Choose Network</h2>
+
+    <select id="network">
+      <option value="MTN">MTN</option>
+      <option value="Airtel">Airtel</option>
+      <option value="Glo">Glo</option>
+      <option value="9mobile">9mobile</option>
+    </select>
+
+    <label>Phone Number</label>
+    <input
+      type="tel"
+      id="phone"
+      placeholder="08012345678"
+      maxlength="11"
+    >
   </div>
 
-  <div class="container">
+  <div class="card">
+    <h2>Choose Data</h2>
 
-    <div class="card">
-      <h2>1. Choose Network</h2>
-
-      <div class="networks">
-        <button class="network" onclick="selectNetwork('MTN', this)">MTN</button>
-        <button class="network" onclick="selectNetwork('Glo', this)">Glo</button>
-        <button class="network" onclick="selectNetwork('Airtel', this)">Airtel</button>
-        <button class="network" onclick="selectNetwork('9mobile', this)">9mobile</button>
-      </div>
+    <div class="bundle">
+      <strong>500MB</strong>
+      <span class="price">₦150</span>
     </div>
 
-    <div class="card hidden" id="bundleCard">
-      <h2>2. Choose Data Bundle</h2>
-      <div class="bundles" id="bundleList"></div>
+    <div class="bundle">
+      <strong>1GB</strong>
+      <span class="price">₦300</span>
     </div>
 
-    <div class="card hidden" id="phoneCard">
-      <h2>3. Phone Number</h2>
-
-      <input
-        type="tel"
-        id="phoneNumber"
-        class="phone-input"
-        placeholder="08012345678"
-        maxlength="11"
-        oninput="checkForm()"
-      >
+    <div class="bundle">
+      <strong>2GB</strong>
+      <span class="price">₦550</span>
     </div>
 
-    <div class="card hidden" id="summaryCard">
-      <h2>Order Summary</h2>
-
-      <div class="summary">
-        <p>Network: <span id="summaryNetwork"></span></p>
-        <p>Bundle: <span id="summaryBundle"></span></p>
-        <p>Price: ₦<span id="summaryPrice"></span></p>
-      </div>
-
-      <button id="buyButton" class="buy-button" disabled onclick="buyData()">
-        Buy Data
-      </button>
+    <div class="bundle">
+      <strong>5GB</strong>
+      <span class="price">₦1,200</span>
     </div>
 
+    <br>
+
+    <button onclick="buyData()">Continue</button>
+
+    <p class="note">
+      Prices shown are demo prices for the NOVA website.
+      Actual data delivery will require a data vending/API provider and payment integration.
+    </p>
   </div>
 
-  <script>
+</div>
 
-    let selectedNetwork = "";
-    let selectedBundle = null;
+<footer>
+  © 2026 NOVA Data. All rights reserved.
+</footer>
 
-    const bundles = {
-      MTN: [
-        { name: "500MB", price: 150 },
-        { name: "1GB", price: 300 },
-        { name: "2GB", price: 600 },
-        { name: "5GB", price: 1500 },
-        { name: "10GB", price: 2800 }
-      ],
+<script>
+  function buyData() {
+    const phone = document.getElementById("phone").value;
+    const network = document.getElementById("network").value;
 
-      Glo: [
-        { name: "500MB", price: 140 },
-        { name: "1GB", price: 280 },
-        { name: "2GB", price: 550 },
-        { name: "5GB", price: 1400 },
-        { name: "10GB", price: 2700 }
-      ],
-
-      Airtel: [
-        { name: "500MB", price: 150 },
-        { name: "1GB", price: 300 },
-        { name: "2GB", price: 600 },
-        { name: "5GB", price: 1450 },
-        { name: "10GB", price: 2750 }
-      ],
-
-      "9mobile": [
-        { name: "500MB", price: 150 },
-        { name: "1GB", price: 300 },
-        { name: "2GB", price: 580 },
-        { name: "5GB", price: 1450 },
-        { name: "10GB", price: 2800 }
-      ]
-    };
-
-    function selectNetwork(network, button) {
-
-      selectedNetwork = network;
-      selectedBundle = null;
-
-      document.querySelectorAll(".network").forEach(function(btn) {
-        btn.classList.remove("selected");
-      });
-
-      button.classList.add("selected");
-
-      const bundleList = document.getElementById("bundleList");
-
-      bundleList.innerHTML = "";
-
-      bundles[network].forEach(function(bundle) {
-
-        const div = document.createElement("div");
-
-        div.className = "bundle";
-
-        div.innerHTML =
-          '<span class="bundle-name">' + bundle.name + '</span>' +
-          '<span class="bundle-price">₦' + bundle.price + '</span>';
-
-        div.onclick = function() {
-          selectBundle(bundle, div);
-        };
-
-        bundleList.appendChild(div);
-      });
-
-      document.getElementById("bundleCard").classList.remove("hidden");
-
-      document.getElementById("phoneCard").classList.add("hidden");
-
-      document.getElementById("summaryCard").classList.add("hidden");
+    if (phone.length !== 11) {
+      alert("Please enter a valid 11-digit Nigerian phone number.");
+      return;
     }
 
-    function selectBundle(bundle, element) {
-
-      selectedBundle = bundle;
-
-      document.querySelectorAll(".bundle").forEach(function(item) {
-        item.classList.remove("selected");
-      });
-
-      element.classList.add("selected");
-
-      document.getElementById("phoneCard").classList.remove("hidden");
-      document.getElementById("summaryCard").classList.remove("hidden");
-
-      document.getElementById("summaryNetwork").textContent = selectedNetwork;
-      document.getElementById("summaryBundle").textContent = bundle.name;
-      document.getElementById("summaryPrice").textContent = bundle.price;
-
-      checkForm();
-    }
-
-    function checkForm() {
-
-      const phone = document.getElementById("phoneNumber").value;
-
-      document.getElementById("buyButton").disabled =
-        !(selectedNetwork && selectedBundle && phone.length === 11);
-    }
-
-    async function buyData() {
-
-      const phone = document.getElementById("phoneNumber").value;
-
-      try {
-
-        const response = await fetch("/api/orders", {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          body: JSON.stringify({
-            network: selectedNetwork,
-            bundle: selectedBundle.name,
-            phone: phone,
-            price: selectedBundle.price
-          })
-
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-
-          alert(
-            "Order created successfully!\n\n" +
-            "Order ID: " + result.orderId + "\n" +
-            "Network: " + result.order.network + "\n" +
-            "Bundle: " + result.order.bundle + "\n" +
-            "Phone: " + result.order.phone + "\n" +
-            "Price: ₦" + result.order.price
-          );
-
-        } else {
-
-          alert("Order failed: " + result.message);
-
-        }
-
-      } catch (error) {
-
-        alert("Could not connect to NOVA server.");
-
-      }
-    }
-
-  </script>
+    alert(
+      "NOVA\n\nNetwork: " +
+      network +
+      "\nPhone: " +
+      phone +
+      "\n\nPayment system coming next."
+    );
+  }
+</script>
 
 </body>
 </html>
