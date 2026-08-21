@@ -226,9 +226,13 @@
   © 2026 NOVA Data. All rights reserved.
 </footer>
 
+<script src="https://js.paystack.co/v2/inline.js"></script>
+
 <script>
+  const PAYSTACK_PUBLIC_KEY = "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
+
   let selectedBundle = null;
-const PAYSTACK_PUBLIC_KEY = "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
+
   function selectBundle(name, price) {
     selectedBundle = {
       name: name,
@@ -245,61 +249,46 @@ const PAYSTACK_PUBLIC_KEY = "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
       price.toLocaleString();
   }
 
-  async function buyData() {
-  const phone = document.getElementById("phone").value;
-  const network = document.getElementById("network").value;
+  function buyData() {
+    const phone = document.getElementById("phone").value;
+    const network = document.getElementById("network").value;
 
-  if (!selectedBundle) {
-    alert("Please select a data bundle first.");
-    return;
-  }
-
-  if (!/^[0-9]{11}$/.test(phone)) {
-    alert("Please enter a valid 11-digit Nigerian phone number.");
-    return;
-  }
-
-  const handler = PaystackPop.setup({
-    key: PAYSTACK_PUBLIC_KEY,
-    email: "customer@example.com",
-    amount: selectedBundle.price * 100,
-    currency: "NGN",
-
-    callback: function(response) {
-      alert(
-        "Payment successful!\n\n" +
-        "Reference: " + response.reference
-      );
-    },
-
-    onClose: function() {
-      alert("Payment window closed.");
+    if (!selectedBundle) {
+      alert("Please select a data bundle first.");
+      return;
     }
-  });
 
-  handler.openIframe();
-            }
+    if (!/^[0-9]{11}$/.test(phone)) {
+      alert("Please enter a valid 11-digit Nigerian phone number.");
+      return;
+    }
 
-      const result = await response.json();
+    if (typeof PaystackPop === "undefined") {
+      alert("Paystack is still loading. Please refresh and try again.");
+      return;
+    }
 
-      if (!response.ok) {
-        throw new Error(result.error || "Order failed");
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email: "customer@example.com",
+      amount: selectedBundle.price * 100,
+      currency: "NGN",
+
+      callback: function(response) {
+        alert(
+          "Payment successful!\n\n" +
+          "Reference: " + response.reference
+        );
+      },
+
+      onClose: function() {
+        alert("Payment window closed.");
       }
+    });
 
-      alert(
-        "NOVA\n\nOrder received!\n\n" +
-        "Network: " + result.order.network + "\n" +
-        "Phone: " + result.order.phone + "\n" +
-        "Bundle: " + result.order.bundle + "\n" +
-        "Price: ₦" + result.order.price
-      );
-
-    } catch (error) {
-      alert("NOVA server connection failed.");
-      console.error(error);
-    }
+    handler.openIframe();
   }
-</script>
+    </script>
 
 </body>
 </html>
