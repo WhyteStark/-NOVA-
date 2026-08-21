@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>NOVA Data</title>
+
+  <script src="https://js.paystack.co/v2/inline.js"></script>
 
   <style>
     * {
@@ -101,6 +104,17 @@
       padding: 16px;
       border-radius: 12px;
       margin-bottom: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .bundle:active {
+      transform: scale(0.98);
+    }
+
+    .bundle.selected {
+      border-color: #4ade80;
+      background: #122018;
     }
 
     .bundle strong {
@@ -110,6 +124,16 @@
     .price {
       color: #4ade80;
       font-weight: bold;
+    }
+
+    #selected {
+      display: none;
+      margin: 15px 0;
+      padding: 15px;
+      background: #181818;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
     }
 
     button {
@@ -124,15 +148,8 @@
       cursor: pointer;
     }
 
-    button:hover {
-      opacity: 0.85;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      color: #666;
-      font-size: 13px;
+    button:active {
+      transform: scale(0.98);
     }
 
     .note {
@@ -141,9 +158,16 @@
       line-height: 1.5;
       margin-top: 12px;
     }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #666;
+      font-size: 13px;
+    }
   </style>
 </head>
-<script src="https://js.paystack.co/v2/inline.js"></script>
+
 <body>
 
 <header>
@@ -153,12 +177,16 @@
 
 <section class="hero">
   <h1>Buy Data. Simply.</h1>
-  <p>Fast, affordable data bundles.<br>Choose your network and get connected.</p>
+  <p>
+    Fast, affordable data bundles.<br>
+    Choose your network and get connected.
+  </p>
 </section>
 
 <div class="container">
 
   <div class="card">
+
     <h2>Choose Network</h2>
 
     <select id="network">
@@ -169,55 +197,55 @@
     </select>
 
     <label>Phone Number</label>
+
     <input
       type="tel"
       id="phone"
       placeholder="08012345678"
       maxlength="11"
     >
+
   </div>
 
   <div class="card">
+
     <h2>Choose Data</h2>
 
-<div class="bundle" onclick="selectBundle('500MB', 150)">
-  <strong>500MB</strong>
-  <span class="price">₦150</span>
-</div>
+    <div class="bundle"
+         onclick="selectBundle(this, '500MB', 150)">
+      <strong>500MB</strong>
+      <span class="price">₦150</span>
+    </div>
 
-<div class="bundle" onclick="selectBundle('1GB', 300)">
-  <strong>1GB</strong>
-  <span class="price">₦300</span>
-</div>
+    <div class="bundle"
+         onclick="selectBundle(this, '1GB', 300)">
+      <strong>1GB</strong>
+      <span class="price">₦300</span>
+    </div>
 
-<div class="bundle" onclick="selectBundle('2GB', 550)">
-  <strong>2GB</strong>
-  <span class="price">₦550</span>
-</div>
+    <div class="bundle"
+         onclick="selectBundle(this, '2GB', 550)">
+      <strong>2GB</strong>
+      <span class="price">₦550</span>
+    </div>
 
-<div class="bundle" onclick="selectBundle('5GB', 1200)">
-  <strong>5GB</strong>
-  <span class="price">₦1,200</span>
-</div>
+    <div class="bundle"
+         onclick="selectBundle(this, '5GB', 1200)">
+      <strong>5GB</strong>
+      <span class="price">₦1,200</span>
+    </div>
 
-<div id="selected" style="display:none;"></div>
+    <div id="selected"></div>
 
-<div id="selected" style="
-  display:none;
-  margin-top:15px;
-  padding:15px;
-  background:#181818;
-  border-radius:10px;
-  text-align:center;
-">
-</div>
-
-    <button onclick="buyData()">Continue</button>
+    <button onclick="buyData()">
+      Continue
+    </button>
 
     <p class="note">
-      Prices shown are demo prices for the NOVA website.
-      Actual data delivery will require a data vending/API provider and payment integration.
+      NOVA is currently in test mode.
+      No real data will be delivered yet.
     </p>
+
   </div>
 
 </div>
@@ -226,14 +254,21 @@
   © 2026 NOVA Data. All rights reserved.
 </footer>
 
-<script src="https://js.paystack.co/v2/inline.js"></script>
-
 <script>
-  const PAYSTACK_PUBLIC_KEY = "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
+
+  const PAYSTACK_PUBLIC_KEY =
+    "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
 
   let selectedBundle = null;
 
-  function selectBundle(name, price) {
+  function selectBundle(element, name, price) {
+
+    document.querySelectorAll(".bundle").forEach(function(bundle) {
+      bundle.classList.remove("selected");
+    });
+
+    element.classList.add("selected");
+
     selectedBundle = {
       name: name,
       price: price
@@ -242,6 +277,7 @@
     const selected = document.getElementById("selected");
 
     selected.style.display = "block";
+
     selected.innerHTML =
       "Selected: <strong>" +
       name +
@@ -249,9 +285,11 @@
       price.toLocaleString();
   }
 
+
   function buyData() {
-    const phone = document.getElementById("phone").value;
-    const network = document.getElementById("network").value;
+
+    const phone =
+      document.getElementById("phone").value;
 
     if (!selectedBundle) {
       alert("Please select a data bundle first.");
@@ -259,36 +297,64 @@
     }
 
     if (!/^[0-9]{11}$/.test(phone)) {
-      alert("Please enter a valid 11-digit Nigerian phone number.");
+      alert(
+        "Please enter a valid 11-digit Nigerian phone number."
+      );
       return;
     }
 
-    if (typeof PaystackPop === "undefined") {
-      alert("Paystack is still loading. Please refresh and try again.");
+    if (
+      typeof PaystackPop === "undefined"
+    ) {
+      alert(
+        "Paystack could not load. Please refresh the page."
+      );
       return;
     }
 
-    const handler = PaystackPop.setup({
-      key: PAYSTACK_PUBLIC_KEY,
-      email: "customer@example.com",
-      amount: selectedBundle.price * 100,
-      currency: "NGN",
+    const network =
+      document.getElementById("network").value;
 
-      callback: function(response) {
-        alert(
-          "Payment successful!\n\n" +
-          "Reference: " + response.reference
-        );
-      },
+    const handler =
+      PaystackPop.setup({
 
-      onClose: function() {
-        alert("Payment window closed.");
-      }
-    });
+        key: PAYSTACK_PUBLIC_KEY,
+
+        email:
+          "customer@example.com",
+
+        amount:
+          selectedBundle.price * 100,
+
+        currency:
+          "NGN",
+
+        callback:
+          function(response) {
+
+            alert(
+              "Payment successful!\n\n" +
+              "Reference: " +
+              response.reference
+            );
+
+          },
+
+        onClose:
+          function() {
+
+            alert(
+              "Payment window closed."
+            );
+
+          }
+
+      });
 
     handler.openIframe();
   }
-    </script>
+
+</script>
 
 </body>
 </html>
