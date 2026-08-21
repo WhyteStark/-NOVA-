@@ -225,6 +225,23 @@
 </footer>
 
 <script>
+  let selectedBundle = null;
+
+function selectBundle(name, price) {
+  selectedBundle = {
+    name: name,
+    price: price
+  };
+
+  const selected = document.getElementById("selected");
+
+  selected.style.display = "block";
+  selected.innerHTML =
+    "Selected: <strong>" +
+    name +
+    "</strong> — ₦" +
+    price.toLocaleString();
+    }
   function buyData() {
     const phone = document.getElementById("phone").value;
     const network = document.getElementById("network").value;
