@@ -242,19 +242,52 @@ function selectBundle(name, price) {
     "</strong> — ₦" +
     price.toLocaleString();
     }
-  function buyData() {
-    const phone = document.getElementById("phone").value;
-    const network = document.getElementById("network").value;
+async function buyData() {
+  const phone = document.getElementById("phone").value;
+  const network = document.getElementById("network").value;
 
-    if (phone.length !== 11) {
-      alert("Please enter a valid 11-digit Nigerian phone number.");
-      return;
-    }
+  if (phone.length !== 11) {
+    alert("Please enter a valid 11-digit Nigerian phone number.");
+    return;
+  }
 
-    if (!selectedBundle) {
-  alert("Please select a data bundle first.");
-  return;
-}
+  if (!selectedBundle) {
+    alert("Please select a data bundle first.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "https://nova-backend-fh5p.onrender.com/api/order",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          network: network,
+          phone: phone,
+          bundle: selectedBundle.name,
+          price: selectedBundle.price
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    alert(
+      "NOVA\n\n" +
+      "Order received!\n\n" +
+      "Network: " + result.order.network +
+      "\nPhone: " + result.order.phone +
+      "\nBundle: " + result.order.bundle +
+      "\nPrice: ₦" + result.order.price
+    );
+
+  } catch (error) {
+    alert("Unable to connect to NOVA server. Please try again.");
+  }
+  }
 
 alert(
   "NOVA\n\n" +
