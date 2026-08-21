@@ -180,27 +180,35 @@
   <div class="card">
     <h2>Choose Data</h2>
 
-    <div class="bundle">
-      <strong>500MB</strong>
-      <span class="price">₦150</span>
-    </div>
+<div class="bundle" onclick="selectBundle('500MB', 150)">
+  <strong>500MB</strong>
+  <span class="price">₦150</span>
+</div>
 
-    <div class="bundle">
-      <strong>1GB</strong>
-      <span class="price">₦300</span>
-    </div>
+<div class="bundle" onclick="selectBundle('1GB', 300)">
+  <strong>1GB</strong>
+  <span class="price">₦300</span>
+</div>
 
-    <div class="bundle">
-      <strong>2GB</strong>
-      <span class="price">₦550</span>
-    </div>
+<div class="bundle" onclick="selectBundle('2GB', 550)">
+  <strong>2GB</strong>
+  <span class="price">₦550</span>
+</div>
 
-    <div class="bundle">
-      <strong>5GB</strong>
-      <span class="price">₦1,200</span>
-    </div>
+<div class="bundle" onclick="selectBundle('5GB', 1200)">
+  <strong>5GB</strong>
+  <span class="price">₦1,200</span>
+</div>
 
-    <br>
+<div id="selected" style="
+  display:none;
+  margin-top:15px;
+  padding:15px;
+  background:#181818;
+  border-radius:10px;
+  text-align:center;
+">
+</div>
 
     <button onclick="buyData()">Continue</button>
 
