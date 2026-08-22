@@ -315,43 +315,69 @@
     const network =
       document.getElementById("network").value;
 
-    const handler =
-      PaystackPop.setup({
+const handler = PaystackPop.setup({
 
-        key: PAYSTACK_PUBLIC_KEY,
+  key: PAYSTACK_PUBLIC_KEY,
 
-        email:
-          "customer@example.com",
+  email: "customer@example.com",
 
-        amount:
-          selectedBundle.price * 100,
+  amount: selectedBundle.price * 100,
 
-        currency:
-          "NGN",
+  currency: "NGN",
 
-        callback:
-          function(response) {
+  callback: async function(response) {
 
-            alert(
-              "Payment successful!\n\n" +
-              "Reference: " +
-              response.reference
-            );
+    try {
 
-          },
+      const verifyResponse = await fetch(
+        `https://nova-backend-fh5p.onrender.com/api/verify-payment/${encodeURIComponent(response.reference)}`
+      );
 
-        onClose:
-          function() {
+      const result = await verifyResponse.json();
 
-            alert(
-              "Payment window closed."
-            );
+      if (!verifyResponse.ok || result.status !== "success") {
 
-          }
+        alert(
+          "Payment was received, but verification failed.\n\n" +
+          "Reference: " +
+          response.reference
+        );
 
-      });
+        return;
+      }
 
-    handler.openIframe();
+      alert(
+        "Payment verified successfully! 🎉\n\n" +
+        "Reference: " +
+        result.reference +
+        "\n\n" +
+        "Amount: ₦" +
+        (result.amount / 100).toFixed(2)
+      );
+
+    } catch (error) {
+
+      console.error("Verification error:", error);
+
+      alert(
+        "Payment was successful, but NOVA could not verify it.\n\n" +
+        "Reference: " +
+        response.reference
+      );
+
+    }
+
+  },
+
+  onClose: function() {
+
+    alert("Payment window closed.");
+
+  }
+
+});
+
+handler.openIframe();
   }
 
 </script>
