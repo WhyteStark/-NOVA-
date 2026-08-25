@@ -36,16 +36,16 @@
 
     .logo {
       text-align: center;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: bold;
-      letter-spacing: 2px;
-      margin: 20px 0 5px;
+      letter-spacing: 3px;
+      margin: 25px 0 5px;
     }
 
     .subtitle {
       text-align: center;
       color: #9aa4b2;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .card {
@@ -76,7 +76,8 @@
       background: #0b1016;
       color: white;
       outline: none;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      font-size: 15px;
     }
 
     input:focus {
@@ -90,13 +91,13 @@
     }
 
     .network {
-      padding: 14px;
+      padding: 15px;
       background: #18212c;
       border: 1px solid #293543;
       border-radius: 10px;
       color: white;
       cursor: pointer;
-      text-align: center;
+      font-size: 15px;
     }
 
     .network.selected {
@@ -117,11 +118,6 @@
       border-radius: 12px;
       color: white;
       cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .bundle:hover {
-      transform: translateY(-2px);
     }
 
     .bundle.selected {
@@ -143,13 +139,13 @@
       background: #0d131a;
       border-radius: 12px;
       padding: 15px;
-      margin-top: 15px;
+      margin-top: 18px;
     }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       color: #b8c2ce;
     }
 
@@ -176,7 +172,7 @@
     }
 
     .buy-button:disabled {
-      opacity: 0.5;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
@@ -187,6 +183,7 @@
       margin-top: 15px;
       text-align: center;
       font-size: 14px;
+      line-height: 1.4;
     }
 
     .message.show {
@@ -201,6 +198,11 @@
     .error {
       background: #351719;
       color: #ff9292;
+    }
+
+    .loading {
+      background: #17202a;
+      color: #cbd5df;
     }
 
     .footer {
@@ -222,6 +224,7 @@
       Fast and simple data purchase
     </div>
 
+
     <!-- CUSTOMER DETAILS -->
     <div class="card">
 
@@ -235,7 +238,7 @@
         type="email"
         id="email"
         placeholder="Enter your email"
-        required
+        autocomplete="email"
       >
 
       <label for="phone">
@@ -246,7 +249,8 @@
         type="tel"
         id="phone"
         placeholder="08012345678"
-        required
+        inputmode="numeric"
+        autocomplete="tel"
       >
 
     </div>
@@ -260,6 +264,7 @@
       <div class="networks">
 
         <button
+          type="button"
           class="network"
           onclick="selectNetwork(this, 'MTN')"
         >
@@ -267,6 +272,7 @@
         </button>
 
         <button
+          type="button"
           class="network"
           onclick="selectNetwork(this, 'Airtel')"
         >
@@ -274,6 +280,7 @@
         </button>
 
         <button
+          type="button"
           class="network"
           onclick="selectNetwork(this, 'Glo')"
         >
@@ -281,6 +288,7 @@
         </button>
 
         <button
+          type="button"
           class="network"
           onclick="selectNetwork(this, '9mobile')"
         >
@@ -300,86 +308,57 @@
       <div class="bundles">
 
         <button
+          type="button"
           class="bundle"
           onclick="selectBundle(this, '500MB', 150)"
         >
-          <div class="bundle-name">
-            500MB
-          </div>
-
-          <div class="bundle-price">
-            ₦150
-          </div>
+          <div class="bundle-name">500MB</div>
+          <div class="bundle-price">₦150</div>
         </button>
 
-
         <button
+          type="button"
           class="bundle"
           onclick="selectBundle(this, '1GB', 300)"
         >
-          <div class="bundle-name">
-            1GB
-          </div>
-
-          <div class="bundle-price">
-            ₦300
-          </div>
+          <div class="bundle-name">1GB</div>
+          <div class="bundle-price">₦300</div>
         </button>
 
-
         <button
+          type="button"
           class="bundle"
           onclick="selectBundle(this, '2GB', 600)"
         >
-          <div class="bundle-name">
-            2GB
-          </div>
-
-          <div class="bundle-price">
-            ₦600
-          </div>
+          <div class="bundle-name">2GB</div>
+          <div class="bundle-price">₦600</div>
         </button>
 
-
         <button
+          type="button"
           class="bundle"
           onclick="selectBundle(this, '3GB', 900)"
         >
-          <div class="bundle-name">
-            3GB
-          </div>
-
-          <div class="bundle-price">
-            ₦900
-          </div>
+          <div class="bundle-name">3GB</div>
+          <div class="bundle-price">₦900</div>
         </button>
 
-
         <button
+          type="button"
           class="bundle"
           onclick="selectBundle(this, '5GB', 1500)"
         >
-          <div class="bundle-name">
-            5GB
-          </div>
-
-          <div class="bundle-price">
-            ₦1,500
-          </div>
+          <div class="bundle-name">5GB</div>
+          <div class="bundle-price">₦1,500</div>
         </button>
 
-
         <button
+          type="button"
           class="bundle"
           onclick="selectBundle(this, '10GB', 3000)"
         >
-          <div class="bundle-name">
-            10GB
-          </div>
-
-          <div class="bundle-price">
-            ₦3,000
-          </div>
+          <div class="bundle-name">10GB</div>
+          <div class="bundle-price">₦3,000</div>
         </button>
 
       </div>
@@ -413,6 +392,7 @@
 
 
       <button
+        type="button"
         class="buy-button"
         id="buyButton"
         onclick="buyBundle()"
@@ -439,10 +419,10 @@
   <script>
 
     /*
-     * ============================
-     * NOVA CONFIGURATION
-     * ============================
-     */
+    |--------------------------------------------------------------------------
+    | NOVA CONFIG
+    |--------------------------------------------------------------------------
+    */
 
     const PAYSTACK_PUBLIC_KEY =
       "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
@@ -452,10 +432,10 @@
 
 
     /*
-     * ============================
-     * STATE
-     * ============================
-     */
+    |--------------------------------------------------------------------------
+    | STATE
+    |--------------------------------------------------------------------------
+    */
 
     let selectedNetwork = null;
 
@@ -463,35 +443,49 @@
 
 
     /*
-     * ============================
-     * SELECT NETWORK
-     * ============================
-     */
+    |--------------------------------------------------------------------------
+    | SELECT NETWORK
+    |--------------------------------------------------------------------------
+    */
 
-    function selectNetwork(element, network) {
+    function selectNetwork(
+      element,
+      network
+    ) {
 
       document
         .querySelectorAll(".network")
         .forEach(function(button) {
-          button.classList.remove("selected");
+
+          button.classList.remove(
+            "selected"
+          );
+
         });
 
-      element.classList.add("selected");
 
-      selectedNetwork = network;
+      element.classList.add(
+        "selected"
+      );
+
+
+      selectedNetwork =
+        network;
+
 
       document.getElementById(
         "summaryNetwork"
-      ).textContent = network;
+      ).textContent =
+        network;
 
     }
 
 
     /*
-     * ============================
-     * SELECT BUNDLE
-     * ============================
-     */
+    |--------------------------------------------------------------------------
+    | SELECT BUNDLE
+    |--------------------------------------------------------------------------
+    */
 
     function selectBundle(
       element,
@@ -502,71 +496,99 @@
       document
         .querySelectorAll(".bundle")
         .forEach(function(bundle) {
-          bundle.classList.remove("selected");
+
+          bundle.classList.remove(
+            "selected"
+          );
+
         });
 
-      element.classList.add("selected");
+
+      element.classList.add(
+        "selected"
+      );
+
 
       selectedBundle = {
+
         name: name,
+
         price: Number(price)
+
       };
+
 
       document.getElementById(
         "summaryBundle"
-      ).textContent = name;
+      ).textContent =
+        name;
+
 
       document.getElementById(
         "summaryAmount"
       ).textContent =
-        "₦" + Number(price).toLocaleString();
+        "₦" +
+        Number(price)
+          .toLocaleString();
 
     }
 
 
     /*
-     * ============================
-     * MESSAGE
-     * ============================
-     */
+    |--------------------------------------------------------------------------
+    | MESSAGE
+    |--------------------------------------------------------------------------
+    */
 
     function showMessage(
-      message,
+      text,
       type
     ) {
 
-      const box =
-        document.getElementById("message");
+      const message =
+        document.getElementById(
+          "message"
+        );
 
-      box.textContent = message;
 
-      box.className =
-        "message show " + type;
+      message.textContent =
+        text;
+
+
+      message.className =
+        "message show " +
+        type;
 
     }
 
 
-    function hideMessage() {
+    function clearMessage() {
 
-      const box =
-        document.getElementById("message");
+      const message =
+        document.getElementById(
+          "message"
+        );
 
-      box.className = "message";
 
-      box.textContent = "";
+      message.textContent =
+        "";
+
+
+      message.className =
+        "message";
 
     }
 
 
     /*
-     * ============================
-     * BUY DATA
-     * ============================
-     */
+    |--------------------------------------------------------------------------
+    | BUY DATA
+    |--------------------------------------------------------------------------
+    */
 
     async function buyBundle() {
 
-      hideMessage();
+      clearMessage();
 
 
       const email =
@@ -583,9 +605,15 @@
           .trim();
 
 
+      const button =
+        document.getElementById(
+          "buyButton"
+        );
+
+
       /*
-       * Validate network
-       */
+      | Validate network
+      */
 
       if (!selectedNetwork) {
 
@@ -595,12 +623,13 @@
         );
 
         return;
+
       }
 
 
       /*
-       * Validate bundle
-       */
+      | Validate bundle
+      */
 
       if (!selectedBundle) {
 
@@ -610,12 +639,13 @@
         );
 
         return;
+
       }
 
 
       /*
-       * Validate email
-       */
+      | Validate email
+      */
 
       if (!email) {
 
@@ -625,48 +655,59 @@
         );
 
         return;
+
       }
 
 
       /*
-       * Validate phone
-       */
+      | Validate phone
+      */
 
       if (!phone) {
 
         showMessage(
-          "Please enter the phone number to receive the data.",
+          "Please enter the phone number that should receive the data.",
           "error"
         );
 
         return;
+
       }
 
 
-      const button =
-        document.getElementById(
-          "buyButton"
-        );
+      button.disabled =
+        true;
 
-
-      button.disabled = true;
 
       button.textContent =
         "Creating order...";
 
 
+      showMessage(
+        "Creating your NOVA order...",
+        "loading"
+      );
+
+
       try {
 
         /*
-         * ============================
-         * CREATE NOVA ORDER
-         * ============================
-         */
+        |--------------------------------------------------------------------------
+        | CREATE ORDER
+        |
+        | IMPORTANT:
+        | Your real server.js uses:
+        |
+        | POST /api/order
+        |--------------------------------------------------------------------------
+        */
 
         const orderResponse =
           await fetch(
-            BACKEND_URL + "/api/order",
+            BACKEND_URL +
+            "/api/order",
             {
+
               method: "POST",
 
               headers: {
@@ -674,22 +715,23 @@
                   "application/json"
               },
 
-              body: JSON.stringify({
+              body:
+                JSON.stringify({
 
-                email: email,
+                  network:
+                    selectedNetwork,
 
-                phone: phone,
+                  phone:
+                    phone,
 
-                network:
-                  selectedNetwork,
+                  bundle:
+                    selectedBundle.name,
 
-                bundle:
-                  selectedBundle.name,
+                  price:
+                    selectedBundle.price
 
-                amount:
-                  selectedBundle.price
+                })
 
-              })
             }
           );
 
@@ -699,7 +741,7 @@
 
 
         console.log(
-          "NOVA order:",
+          "NOVA ORDER:",
           orderData
         );
 
@@ -707,18 +749,43 @@
         if (!orderResponse.ok) {
 
           throw new Error(
-            orderData.message ||
-            "Could not create order."
+            orderData.error ||
+            "Unable to create order."
           );
 
         }
 
 
         /*
-         * ============================
-         * START PAYSTACK
-         * ============================
-         */
+        |--------------------------------------------------------------------------
+        | ORDER CREATED
+        |--------------------------------------------------------------------------
+        */
+
+        showMessage(
+          orderData.message ||
+          "Order received. Opening payment...",
+          "loading"
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAYSTACK
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+          typeof PaystackPop ===
+          "undefined"
+        ) {
+
+          throw new Error(
+            "Paystack could not be loaded. Check your internet connection and try again."
+          );
+
+        }
+
 
         button.textContent =
           "Opening payment...";
@@ -734,18 +801,23 @@
               email,
 
             amount:
-              selectedBundle.price * 100,
+              selectedBundle.price *
+              100,
 
             currency:
               "NGN",
 
 
             /*
-             * PAYMENT CALLBACK
-             */
+            |--------------------------------------------------------------------------
+            | PAYSTACK SUCCESS
+            |--------------------------------------------------------------------------
+            */
 
             callback:
-              async function(response) {
+              async function(
+                response
+              ) {
 
                 console.log(
                   "Paystack reference:",
@@ -753,55 +825,37 @@
                 );
 
 
-                button.disabled = true;
+                button.disabled =
+                  true;
+
 
                 button.textContent =
                   "Verifying payment...";
 
 
+                showMessage(
+                  "Payment received. Verifying...",
+                  "loading"
+                );
+
+
                 try {
 
                   /*
-                   * ============================
-                   * VERIFY PAYMENT
-                   * ============================
-                   */
+                  |--------------------------------------------------------------------------
+                  | YOUR REAL SERVER ROUTE:
+                  |
+                  | GET /api/verify-payment/:reference
+                  |--------------------------------------------------------------------------
+                  */
 
                   const verifyResponse =
                     await fetch(
                       BACKEND_URL +
-                      "/api/verify-payment",
-                      {
-                        method: "POST",
-
-                        headers: {
-                          "Content-Type":
-                            "application/json"
-                        },
-
-                        body:
-                          JSON.stringify({
-
-                            reference:
-                              response.reference,
-
-                            email:
-                              email,
-
-                            phone:
-                              phone,
-
-                            network:
-                              selectedNetwork,
-
-                            bundle:
-                              selectedBundle.name,
-
-                            amount:
-                              selectedBundle.price
-
-                          })
-                      }
+                      "/api/verify-payment/" +
+                      encodeURIComponent(
+                        response.reference
+                      )
                     );
 
 
@@ -810,7 +864,7 @@
 
 
                   console.log(
-                    "Verification:",
+                    "PAYMENT VERIFICATION:",
                     verifyData
                   );
 
@@ -820,41 +874,68 @@
                   ) {
 
                     throw new Error(
-                      verifyData.message ||
+                      verifyData.error ||
                       "Payment verification failed."
                     );
 
                   }
 
 
-                  showMessage(
-                    verifyData.message ||
-                    "Payment successful! Your data is being processed.",
+                  if (
+                    verifyData.status ===
                     "success"
-                  );
+                  ) {
+
+                    showMessage(
+                      "Payment successful! Your " +
+                      selectedBundle.name +
+                      " data order has been verified.",
+                      "success"
+                    );
 
 
-                  button.textContent =
-                    "Payment Successful";
+                    button.textContent =
+                      "Payment Successful";
 
-                }
 
-                catch(error) {
+                    return;
 
-                  console.error(
-                    "Verification error:",
-                    error
-                  );
+                  }
 
 
                   showMessage(
-                    "Payment was made, but verification failed. Please contact NOVA support.",
+                    "Payment could not be confirmed.",
                     "error"
                   );
 
 
                   button.disabled =
                     false;
+
+
+                  button.textContent =
+                    "Buy Data";
+
+                }
+
+                catch(error) {
+
+                  console.error(
+                    "VERIFICATION ERROR:",
+                    error
+                  );
+
+
+                  showMessage(
+                    error.message ||
+                    "Unable to verify your payment.",
+                    "error"
+                  );
+
+
+                  button.disabled =
+                    false;
+
 
                   button.textContent =
                     "Buy Data";
@@ -865,22 +946,28 @@
 
 
             /*
-             * PAYMENT WINDOW CLOSED
-             */
+            |--------------------------------------------------------------------------
+            | PAYSTACK CLOSED
+            |--------------------------------------------------------------------------
+            */
 
             onClose:
               function() {
 
                 console.log(
-                  "Paystack checkout closed."
+                  "Paystack window closed."
                 );
 
 
                 button.disabled =
                   false;
 
+
                 button.textContent =
                   "Buy Data";
+
+
+                clearMessage();
 
               }
 
@@ -895,7 +982,7 @@
       catch(error) {
 
         console.error(
-          "NOVA error:",
+          "NOVA ERROR:",
           error
         );
 
@@ -910,6 +997,7 @@
         button.disabled =
           false;
 
+
         button.textContent =
           "Buy Data";
 
@@ -920,4 +1008,4 @@
   </script>
 
 </body>
-  </html>
+</html>
