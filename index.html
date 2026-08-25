@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>NOVA Data</title>
 
-  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <!-- Paystack -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 
   <style>
     * {
@@ -17,370 +22,902 @@
     }
 
     body {
-      background: #0a0a0a;
-      color: white;
+      background: #0b0f14;
+      color: #ffffff;
       min-height: 100vh;
-    }
-
-    header {
       padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #222;
-    }
-
-    .logo {
-      font-size: 25px;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-
-    .status {
-      font-size: 12px;
-      color: #4ade80;
-    }
-
-    .hero {
-      padding: 45px 20px 30px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 38px;
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      color: #999;
-      font-size: 16px;
-      line-height: 1.5;
     }
 
     .container {
-      max-width: 600px;
+      width: 100%;
+      max-width: 500px;
       margin: auto;
-      padding: 20px;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin: 20px 0 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #9aa4b2;
+      margin-bottom: 30px;
     }
 
     .card {
-      background: #111;
-      border: 1px solid #242424;
+      background: #121821;
+      border: 1px solid #202a36;
       border-radius: 18px;
-      padding: 22px;
+      padding: 20px;
       margin-bottom: 18px;
     }
 
-    .card h2 {
+    h2 {
       font-size: 18px;
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
     label {
       display: block;
-      color: #aaa;
       margin-bottom: 8px;
+      color: #c7d0db;
       font-size: 14px;
     }
 
-    select,
     input {
       width: 100%;
-      padding: 15px;
-      background: #080808;
-      color: white;
-      border: 1px solid #333;
+      padding: 14px;
       border-radius: 10px;
-      margin-bottom: 16px;
-      font-size: 15px;
+      border: 1px solid #303b48;
+      background: #0b1016;
+      color: white;
+      outline: none;
+      margin-bottom: 18px;
+    }
+
+    input:focus {
+      border-color: #ffffff;
+    }
+
+    .networks {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .network {
+      padding: 14px;
+      background: #18212c;
+      border: 1px solid #293543;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .network.selected {
+      border: 2px solid white;
+      background: #202c39;
+    }
+
+    .bundles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
     .bundle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #0b0b0b;
-      border: 1px solid #292929;
-      padding: 16px;
+      padding: 16px 10px;
+      background: #18212c;
+      border: 1px solid #293543;
       border-radius: 12px;
-      margin-bottom: 10px;
+      color: white;
       cursor: pointer;
       transition: 0.2s;
     }
 
-    .bundle:active {
-      transform: scale(0.98);
+    .bundle:hover {
+      transform: translateY(-2px);
     }
 
     .bundle.selected {
-      border-color: #4ade80;
-      background: #122018;
+      border: 2px solid white;
+      background: #202c39;
     }
 
-    .bundle strong {
-      font-size: 16px;
-    }
-
-    .price {
-      color: #4ade80;
+    .bundle-name {
       font-weight: bold;
+      margin-bottom: 6px;
     }
 
-    #selected {
-      display: none;
-      margin: 15px 0;
+    .bundle-price {
+      color: #b8c2ce;
+      font-size: 14px;
+    }
+
+    .summary {
+      background: #0d131a;
+      border-radius: 12px;
       padding: 15px;
-      background: #181818;
-      border-radius: 10px;
-      text-align: center;
-      color: white;
+      margin-top: 15px;
     }
 
-    button {
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: #b8c2ce;
+    }
+
+    .summary-row.total {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #293543;
+    }
+
+    .buy-button {
       width: 100%;
-      padding: 16px;
       border: none;
+      padding: 16px;
       border-radius: 12px;
       background: white;
-      color: black;
+      color: #0b0f14;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 18px;
     }
 
-    button:active {
-      transform: scale(0.98);
+    .buy-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
-    .note {
-      color: #777;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 12px;
-    }
-
-    footer {
+    .message {
+      display: none;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 15px;
       text-align: center;
-      padding: 30px 20px;
-      color: #666;
-      font-size: 13px;
+      font-size: 14px;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .success {
+      background: #12301e;
+      color: #7ff0a5;
+    }
+
+    .error {
+      background: #351719;
+      color: #ff9292;
+    }
+
+    .footer {
+      text-align: center;
+      color: #66717e;
+      font-size: 12px;
+      margin: 25px 0;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">NOVA</div>
-  <div class="status">● ONLINE</div>
-</header>
+  <div class="container">
 
-<section class="hero">
-  <h1>Buy Data. Simply.</h1>
-  <p>
-    Fast, affordable data bundles.<br>
-    Choose your network and get connected.
-  </p>
-</section>
+    <div class="logo">NOVA</div>
 
-<div class="container">
+    <div class="subtitle">
+      Fast and simple data purchase
+    </div>
 
-  <div class="card">
+    <!-- CUSTOMER DETAILS -->
+    <div class="card">
 
-    <h2>Choose Network</h2>
+      <h2>Customer Details</h2>
 
-    <select id="network">
-      <option value="MTN">MTN</option>
-      <option value="Airtel">Airtel</option>
-      <option value="Glo">Glo</option>
-      <option value="9mobile">9mobile</option>
-    </select>
+      <label for="email">
+        Email Address
+      </label>
 
-    <label>Phone Number</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your email"
+        required
+      >
 
-    <input
-      type="tel"
-      id="phone"
-      placeholder="08012345678"
-      maxlength="11"
-    >
+      <label for="phone">
+        Phone Number
+      </label>
+
+      <input
+        type="tel"
+        id="phone"
+        placeholder="08012345678"
+        required
+      >
+
+    </div>
+
+
+    <!-- NETWORK -->
+    <div class="card">
+
+      <h2>Choose Network</h2>
+
+      <div class="networks">
+
+        <button
+          class="network"
+          onclick="selectNetwork(this, 'MTN')"
+        >
+          MTN
+        </button>
+
+        <button
+          class="network"
+          onclick="selectNetwork(this, 'Airtel')"
+        >
+          Airtel
+        </button>
+
+        <button
+          class="network"
+          onclick="selectNetwork(this, 'Glo')"
+        >
+          Glo
+        </button>
+
+        <button
+          class="network"
+          onclick="selectNetwork(this, '9mobile')"
+        >
+          9mobile
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- DATA BUNDLES -->
+    <div class="card">
+
+      <h2>Select Data Bundle</h2>
+
+      <div class="bundles">
+
+        <button
+          class="bundle"
+          onclick="selectBundle(this, '500MB', 150)"
+        >
+          <div class="bundle-name">
+            500MB
+          </div>
+
+          <div class="bundle-price">
+            ₦150
+          </div>
+        </button>
+
+
+        <button
+          class="bundle"
+          onclick="selectBundle(this, '1GB', 300)"
+        >
+          <div class="bundle-name">
+            1GB
+          </div>
+
+          <div class="bundle-price">
+            ₦300
+          </div>
+        </button>
+
+
+        <button
+          class="bundle"
+          onclick="selectBundle(this, '2GB', 600)"
+        >
+          <div class="bundle-name">
+            2GB
+          </div>
+
+          <div class="bundle-price">
+            ₦600
+          </div>
+        </button>
+
+
+        <button
+          class="bundle"
+          onclick="selectBundle(this, '3GB', 900)"
+        >
+          <div class="bundle-name">
+            3GB
+          </div>
+
+          <div class="bundle-price">
+            ₦900
+          </div>
+        </button>
+
+
+        <button
+          class="bundle"
+          onclick="selectBundle(this, '5GB', 1500)"
+        >
+          <div class="bundle-name">
+            5GB
+          </div>
+
+          <div class="bundle-price">
+            ₦1,500
+          </div>
+        </button>
+
+
+        <button
+          class="bundle"
+          onclick="selectBundle(this, '10GB', 3000)"
+        >
+          <div class="bundle-name">
+            10GB
+          </div>
+
+          <div class="bundle-price">
+            ₦3,000
+          </div>
+        </button>
+
+      </div>
+
+
+      <!-- ORDER SUMMARY -->
+      <div class="summary">
+
+        <div class="summary-row">
+          <span>Network</span>
+          <span id="summaryNetwork">
+            Not selected
+          </span>
+        </div>
+
+        <div class="summary-row">
+          <span>Bundle</span>
+          <span id="summaryBundle">
+            Not selected
+          </span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="summaryAmount">
+            ₦0
+          </span>
+        </div>
+
+      </div>
+
+
+      <button
+        class="buy-button"
+        id="buyButton"
+        onclick="buyBundle()"
+      >
+        Buy Data
+      </button>
+
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+    </div>
+
+
+    <div class="footer">
+      © 2026 NOVA. All rights reserved.
+    </div>
 
   </div>
 
-  <div class="card">
 
-    <h2>Choose Data</h2>
+  <script>
 
-    <div class="bundle"
-         onclick="selectBundle(this, '500MB', 150)">
-      <strong>500MB</strong>
-      <span class="price">₦150</span>
-    </div>
+    /*
+     * ============================
+     * NOVA CONFIGURATION
+     * ============================
+     */
 
-    <div class="bundle"
-         onclick="selectBundle(this, '1GB', 300)">
-      <strong>1GB</strong>
-      <span class="price">₦300</span>
-    </div>
+    const PAYSTACK_PUBLIC_KEY =
+      "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
 
-    <div class="bundle"
-         onclick="selectBundle(this, '2GB', 550)">
-      <strong>2GB</strong>
-      <span class="price">₦550</span>
-    </div>
-
-    <div class="bundle"
-         onclick="selectBundle(this, '5GB', 1200)">
-      <strong>5GB</strong>
-      <span class="price">₦1,200</span>
-    </div>
-
-    <div id="selected"></div>
-
-    <button onclick="buyData()">
-      Continue
-    </button>
-
-    <p class="note">
-      NOVA is currently in test mode.
-      No real data will be delivered yet.
-    </p>
-
-  </div>
-
-</div>
-
-<footer>
-  © 2026 NOVA Data. All rights reserved.
-</footer>
-
-<script>
-
-  const PAYSTACK_PUBLIC_KEY =
-    "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
-
-  let selectedBundle = null;
-
-  function selectBundle(element, name, price) {
-
-    document.querySelectorAll(".bundle").forEach(function(bundle) {
-      bundle.classList.remove("selected");
-    });
-
-    element.classList.add("selected");
-
-    selectedBundle = {
-      name: name,
-      price: price
-    };
-
-    const selected = document.getElementById("selected");
-
-    selected.style.display = "block";
-
-    selected.innerHTML =
-      "Selected: <strong>" +
-      name +
-      "</strong> — ₦" +
-      price.toLocaleString();
-  }
+    const BACKEND_URL =
+      "https://nova-backend-fh5p.onrender.com";
 
 
-  function buyData() {
+    /*
+     * ============================
+     * STATE
+     * ============================
+     */
 
-    const phone =
-      document.getElementById("phone").value;
+    let selectedNetwork = null;
 
-    if (!selectedBundle) {
-      alert("Please select a data bundle first.");
-      return;
+    let selectedBundle = null;
+
+
+    /*
+     * ============================
+     * SELECT NETWORK
+     * ============================
+     */
+
+    function selectNetwork(element, network) {
+
+      document
+        .querySelectorAll(".network")
+        .forEach(function(button) {
+          button.classList.remove("selected");
+        });
+
+      element.classList.add("selected");
+
+      selectedNetwork = network;
+
+      document.getElementById(
+        "summaryNetwork"
+      ).textContent = network;
+
     }
 
-    if (!/^[0-9]{11}$/.test(phone)) {
-      alert(
-        "Please enter a valid 11-digit Nigerian phone number."
-      );
-      return;
-    }
 
-    if (
-      typeof PaystackPop === "undefined"
+    /*
+     * ============================
+     * SELECT BUNDLE
+     * ============================
+     */
+
+    function selectBundle(
+      element,
+      name,
+      price
     ) {
-      alert(
-        "Paystack could not load. Please refresh the page."
-      );
-      return;
+
+      document
+        .querySelectorAll(".bundle")
+        .forEach(function(bundle) {
+          bundle.classList.remove("selected");
+        });
+
+      element.classList.add("selected");
+
+      selectedBundle = {
+        name: name,
+        price: Number(price)
+      };
+
+      document.getElementById(
+        "summaryBundle"
+      ).textContent = name;
+
+      document.getElementById(
+        "summaryAmount"
+      ).textContent =
+        "₦" + Number(price).toLocaleString();
+
     }
 
-    const network =
-      document.getElementById("network").value;
 
-const handler = PaystackPop.setup({
+    /*
+     * ============================
+     * MESSAGE
+     * ============================
+     */
 
-  key: PAYSTACK_PUBLIC_KEY,
+    function showMessage(
+      message,
+      type
+    ) {
 
-  email: "customer@example.com",
+      const box =
+        document.getElementById("message");
 
-  amount: selectedBundle.price * 100,
+      box.textContent = message;
 
-  currency: "NGN",
+      box.className =
+        "message show " + type;
 
-  callback: async function(response) {
+    }
 
-    try {
 
-      const verifyResponse = await fetch(
-        `https://nova-backend-fh5p.onrender.com/api/verify-payment/${encodeURIComponent(response.reference)}`
-      );
+    function hideMessage() {
 
-      const result = await verifyResponse.json();
+      const box =
+        document.getElementById("message");
 
-      if (!verifyResponse.ok || result.status !== "success") {
+      box.className = "message";
 
-        alert(
-          "Payment was received, but verification failed.\n\n" +
-          "Reference: " +
-          response.reference
+      box.textContent = "";
+
+    }
+
+
+    /*
+     * ============================
+     * BUY DATA
+     * ============================
+     */
+
+    async function buyBundle() {
+
+      hideMessage();
+
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
+
+      const phone =
+        document
+          .getElementById("phone")
+          .value
+          .trim();
+
+
+      /*
+       * Validate network
+       */
+
+      if (!selectedNetwork) {
+
+        showMessage(
+          "Please select a network first.",
+          "error"
         );
 
         return;
       }
 
-      alert(
-        "Payment verified successfully! 🎉\n\n" +
-        "Reference: " +
-        result.reference +
-        "\n\n" +
-        "Amount: ₦" +
-        (result.amount / 100).toFixed(2)
-      );
 
-    } catch (error) {
+      /*
+       * Validate bundle
+       */
 
-      console.error("Verification error:", error);
+      if (!selectedBundle) {
 
-      alert(
-        "Payment was successful, but NOVA could not verify it.\n\n" +
-        "Reference: " +
-        response.reference
-      );
+        showMessage(
+          "Please select a data bundle first.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      /*
+       * Validate email
+       */
+
+      if (!email) {
+
+        showMessage(
+          "Please enter your email address.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      /*
+       * Validate phone
+       */
+
+      if (!phone) {
+
+        showMessage(
+          "Please enter the phone number to receive the data.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          "buyButton"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Creating order...";
+
+
+      try {
+
+        /*
+         * ============================
+         * CREATE NOVA ORDER
+         * ============================
+         */
+
+        const orderResponse =
+          await fetch(
+            BACKEND_URL + "/api/orders",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+
+                email: email,
+
+                phone: phone,
+
+                network:
+                  selectedNetwork,
+
+                bundle:
+                  selectedBundle.name,
+
+                amount:
+                  selectedBundle.price
+
+              })
+            }
+          );
+
+
+        const orderData =
+          await orderResponse.json();
+
+
+        console.log(
+          "NOVA order:",
+          orderData
+        );
+
+
+        if (!orderResponse.ok) {
+
+          throw new Error(
+            orderData.message ||
+            "Could not create order."
+          );
+
+        }
+
+
+        /*
+         * ============================
+         * START PAYSTACK
+         * ============================
+         */
+
+        button.textContent =
+          "Opening payment...";
+
+
+        const handler =
+          PaystackPop.setup({
+
+            key:
+              PAYSTACK_PUBLIC_KEY,
+
+            email:
+              email,
+
+            amount:
+              selectedBundle.price * 100,
+
+            currency:
+              "NGN",
+
+
+            /*
+             * PAYMENT CALLBACK
+             */
+
+            callback:
+              async function(response) {
+
+                console.log(
+                  "Paystack reference:",
+                  response.reference
+                );
+
+
+                button.disabled = true;
+
+                button.textContent =
+                  "Verifying payment...";
+
+
+                try {
+
+                  /*
+                   * ============================
+                   * VERIFY PAYMENT
+                   * ============================
+                   */
+
+                  const verifyResponse =
+                    await fetch(
+                      BACKEND_URL +
+                      "/api/verify-payment",
+                      {
+                        method: "POST",
+
+                        headers: {
+                          "Content-Type":
+                            "application/json"
+                        },
+
+                        body:
+                          JSON.stringify({
+
+                            reference:
+                              response.reference,
+
+                            email:
+                              email,
+
+                            phone:
+                              phone,
+
+                            network:
+                              selectedNetwork,
+
+                            bundle:
+                              selectedBundle.name,
+
+                            amount:
+                              selectedBundle.price
+
+                          })
+                      }
+                    );
+
+
+                  const verifyData =
+                    await verifyResponse.json();
+
+
+                  console.log(
+                    "Verification:",
+                    verifyData
+                  );
+
+
+                  if (
+                    !verifyResponse.ok
+                  ) {
+
+                    throw new Error(
+                      verifyData.message ||
+                      "Payment verification failed."
+                    );
+
+                  }
+
+
+                  showMessage(
+                    verifyData.message ||
+                    "Payment successful! Your data is being processed.",
+                    "success"
+                  );
+
+
+                  button.textContent =
+                    "Payment Successful";
+
+                }
+
+                catch(error) {
+
+                  console.error(
+                    "Verification error:",
+                    error
+                  );
+
+
+                  showMessage(
+                    "Payment was made, but verification failed. Please contact NOVA support.",
+                    "error"
+                  );
+
+
+                  button.disabled =
+                    false;
+
+                  button.textContent =
+                    "Buy Data";
+
+                }
+
+              },
+
+
+            /*
+             * PAYMENT WINDOW CLOSED
+             */
+
+            onClose:
+              function() {
+
+                console.log(
+                  "Paystack checkout closed."
+                );
+
+
+                button.disabled =
+                  false;
+
+                button.textContent =
+                  "Buy Data";
+
+              }
+
+          });
+
+
+        handler.openIframe();
+
+      }
+
+
+      catch(error) {
+
+        console.error(
+          "NOVA error:",
+          error
+        );
+
+
+        showMessage(
+          error.message ||
+          "Something went wrong. Please try again.",
+          "error"
+        );
+
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Buy Data";
+
+      }
 
     }
 
-  },
-
-  onClose: function() {
-
-    alert("Payment window closed.");
-
-  }
-
-});
-
-handler.openIframe();
-  }
-
-</script>
+  </script>
 
 </body>
-</html>
+  </html>
