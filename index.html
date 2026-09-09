@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>NOVA Data</title>
 
@@ -14,267 +18,265 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
     }
 
     body {
-      background: #0b0f14;
-      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #07111f;
+      color: #ffffff;
       min-height: 100vh;
-      padding: 20px;
     }
 
     .container {
       width: 100%;
-      max-width: 560px;
+      max-width: 900px;
       margin: auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 25px 10px;
     }
 
     .logo {
-      text-align: center;
-      font-size: 36px;
+      font-size: 34px;
       font-weight: 800;
-      letter-spacing: 4px;
-      margin: 25px 0 5px;
+      letter-spacing: 2px;
+      color: #35e0ff;
     }
 
     .subtitle {
+      color: #9db0c5;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .status {
+      margin: 15px auto;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #0d1c2e;
+      color: #9db0c5;
       text-align: center;
-      color: #9aa4b2;
-      margin-bottom: 25px;
+      font-size: 13px;
+      max-width: 500px;
     }
 
     .card {
-      background: #121821;
-      border: 1px solid #202a36;
+      background: #0c1928;
+      border: 1px solid #19324b;
       border-radius: 18px;
       padding: 20px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
 
     h2 {
-      font-size: 18px;
       margin-bottom: 15px;
+      font-size: 20px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      color: #c7d0db;
+      margin-bottom: 7px;
+      color: #a9bdd1;
       font-size: 14px;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       padding: 14px;
       border-radius: 10px;
-      border: 1px solid #303b48;
-      background: #0b1016;
-      color: #fff;
+      border: 1px solid #29445e;
+      background: #081522;
+      color: #ffffff;
       outline: none;
-      margin-bottom: 16px;
       font-size: 15px;
+      margin-bottom: 15px;
     }
 
-    input:focus {
-      border-color: #fff;
+    input:focus,
+    select:focus {
+      border-color: #35e0ff;
     }
 
     .networks {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .network {
-      padding: 15px;
-      background: #18212c;
-      border: 1px solid #293543;
+    .network-btn {
+      padding: 13px 8px;
+      border: 1px solid #29445e;
       border-radius: 10px;
-      color: #fff;
+      background: #081522;
+      color: white;
       cursor: pointer;
-      font-size: 15px;
+      font-weight: 700;
     }
 
-    .network:hover {
-      background: #202c39;
+    .network-btn:hover {
+      border-color: #35e0ff;
     }
 
-    .network.selected {
-      border: 2px solid #fff;
-      background: #202c39;
+    .network-btn.active {
+      background: #35e0ff;
+      color: #031019;
+      border-color: #35e0ff;
     }
 
-    .plans-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .plan-count {
-      color: #7f8b99;
-      font-size: 12px;
-    }
-
-    .bundles {
+    .plans {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      max-height: 600px;
-      overflow-y: auto;
-      padding-right: 3px;
+      gap: 12px;
     }
 
-    .bundle {
-      padding: 15px 10px;
-      background: #18212c;
-      border: 1px solid #293543;
-      border-radius: 12px;
-      color: #fff;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .bundle:hover {
-      background: #202c39;
-    }
-
-    .bundle.selected {
-      border: 2px solid #fff;
-      background: #202c39;
-    }
-
-    .bundle-name {
-      font-weight: bold;
-      margin-bottom: 6px;
-      font-size: 16px;
-    }
-
-    .bundle-duration {
-      color: #8995a3;
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    .bundle-price {
-      color: #fff;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .loading-plans {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: #9aa4b2;
-      padding: 25px 10px;
-    }
-
-    .empty-plans {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: #9aa4b2;
-      padding: 25px 10px;
-    }
-
-    .summary {
-      background: #0d131a;
-      border-radius: 12px;
+    .plan {
+      border: 1px solid #243e57;
+      background: #091624;
+      border-radius: 14px;
       padding: 15px;
-      margin-top: 18px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 9px;
-      color: #b8c2ce;
-    }
-
-    .summary-row span:last-child {
-      text-align: right;
-      color: #fff;
-    }
-
-    .summary-row.total {
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #293543;
-    }
-
-    .buy-button {
-      width: 100%;
-      border: none;
-      padding: 16px;
-      border-radius: 12px;
-      background: #fff;
-      color: #0b0f14;
-      font-size: 16px;
-      font-weight: bold;
       cursor: pointer;
-      margin-top: 18px;
+      transition: 0.2s;
     }
 
-    .buy-button:hover {
+    .plan:hover {
+      transform: translateY(-2px);
+      border-color: #35e0ff;
+    }
+
+    .plan.selected {
+      border-color: #35e0ff;
+      box-shadow: 0 0 0 1px #35e0ff;
+    }
+
+    .plan-name {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .plan-duration {
+      color: #8ea4b8;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .plan-price {
+      color: #35e0ff;
+      font-size: 18px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .buy-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #35e0ff;
+      color: #031019;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .buy-btn:hover {
       opacity: 0.9;
     }
 
-    .buy-button:disabled {
-      opacity: 0.55;
+    .buy-btn:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
     }
 
     .message {
       display: none;
-      padding: 14px;
+      padding: 13px;
       border-radius: 10px;
       margin-top: 15px;
-      text-align: center;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .message.show {
       display: block;
     }
 
-    .success {
-      background: #12301e;
-      color: #7ff0a5;
+    .message.success {
+      background: #0d3525;
+      color: #6ff0b0;
+      border: 1px solid #1d6c49;
     }
 
-    .error {
-      background: #351719;
-      color: #ff9292;
+    .message.error {
+      background: #3a1515;
+      color: #ff9999;
+      border: 1px solid #742b2b;
     }
 
     .loading {
-      background: #17202a;
-      color: #cbd5df;
-    }
-
-    .footer {
       text-align: center;
-      color: #66717e;
-      font-size: 12px;
-      margin: 25px 0;
+      color: #8ea4b8;
+      padding: 25px;
     }
 
-    @media (max-width: 420px) {
-      body {
-        padding: 12px;
+    .summary {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background: #081522;
+      border-radius: 12px;
+      border: 1px solid #1c344b;
+    }
+
+    .summary.show {
+      display: block;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 8px 0;
+      border-bottom: 1px solid #172b3e;
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      color: #8ea4b8;
+    }
+
+    .summary-value {
+      font-weight: 700;
+      text-align: right;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 10px;
+      color: #657b90;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .networks {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .bundles {
+      .plans {
         grid-template-columns: 1fr;
       }
 
       .logo {
-        font-size: 32px;
+        font-size: 29px;
       }
     }
   </style>
@@ -284,863 +286,118 @@
 
   <div class="container">
 
-    <div class="logo">NOVA</div>
+    <header>
+      <div class="logo">NOVA</div>
+      <div class="subtitle">Fast & Reliable Nigerian Data</div>
 
-    <div class="subtitle">
-      Fast and simple data purchase
-    </div>
+      <div id="backendStatus" class="status">
+        Connecting to NOVA server...
+      </div>
+    </header>
 
-
-    <!-- CUSTOMER DETAILS -->
     <div class="card">
 
-      <h2>Customer Details</h2>
+      <h2>📱 Buy Data</h2>
 
-      <label for="email">
-        Email Address
-      </label>
-
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter your email"
-        autocomplete="email"
-      >
-
-      <label for="phone">
-        Phone Number
-      </label>
+      <label for="phone">Phone Number</label>
 
       <input
         type="tel"
         id="phone"
         placeholder="08012345678"
-        inputmode="numeric"
-        autocomplete="tel"
+        maxlength="11"
       >
 
-    </div>
-
-
-    <!-- NETWORK -->
-    <div class="card">
-
-      <h2>Choose Network</h2>
+      <label>Choose Network</label>
 
       <div class="networks">
 
         <button
-          type="button"
-          class="network"
+          class="network-btn active"
           data-network="MTN"
+          onclick="selectNetwork('MTN')"
         >
           MTN
         </button>
 
         <button
-          type="button"
-          class="network"
-          data-network="Airtel"
-        >
-          Airtel
-        </button>
-
-        <button
-          type="button"
-          class="network"
+          class="network-btn"
           data-network="Glo"
+          onclick="selectNetwork('Glo')"
         >
           Glo
         </button>
 
         <button
-          type="button"
-          class="network"
+          class="network-btn"
+          data-network="Airtel"
+          onclick="selectNetwork('Airtel')"
+        >
+          Airtel
+        </button>
+
+        <button
+          class="network-btn"
           data-network="9mobile"
+          onclick="selectNetwork('9mobile')"
         >
           9mobile
         </button>
 
       </div>
 
-    </div>
+      <label>Choose Data Plan</label>
 
-
-    <!-- DATA PLANS -->
-    <div class="card">
-
-      <div class="plans-header">
-
-        <h2>Select Data Bundle</h2>
-
-        <span
-          id="planCount"
-          class="plan-count"
-        >
-          0 plans
-        </span>
-
+      <div id="plans" class="plans">
+        <div class="loading">
+          Loading MTN plans...
+        </div>
       </div>
 
-      <div
-        id="bundles"
-        class="bundles"
-      >
-
-        <div class="empty-plans">
-          Select a network to load data plans.
-        </div>
-
-      </div>
-
-
-      <!-- ORDER SUMMARY -->
-
-      <div class="summary">
+      <div id="summary" class="summary">
 
         <div class="summary-row">
-
-          <span>
-            Network
-          </span>
-
-          <span id="summaryNetwork">
-            Not selected
-          </span>
-
+          <span class="summary-label">Network</span>
+          <span class="summary-value" id="summaryNetwork">-</span>
         </div>
-
 
         <div class="summary-row">
-
-          <span>
-            Bundle
-          </span>
-
-          <span id="summaryBundle">
-            Not selected
-          </span>
-
+          <span class="summary-label">Phone</span>
+          <span class="summary-value" id="summaryPhone">-</span>
         </div>
-
 
         <div class="summary-row">
-
-          <span>
-            Validity
-          </span>
-
-          <span id="summaryDuration">
-            -
-          </span>
-
+          <span class="summary-label">Bundle</span>
+          <span class="summary-value" id="summaryBundle">-</span>
         </div>
 
+        <div class="summary-row">
+          <span class="summary-label">Duration</span>
+          <span class="summary-value" id="summaryDuration">-</span>
+        </div>
 
-        <div class="summary-row total">
-
-          <span>
-            Total
-          </span>
-
-          <span id="summaryAmount">
-            ₦0
-          </span>
-
+        <div class="summary-row">
+          <span class="summary-label">Price</span>
+          <span class="summary-value" id="summaryPrice">-</span>
         </div>
 
       </div>
-
 
       <button
-        type="button"
-        class="buy-button"
         id="buyButton"
+        class="buy-btn"
+        onclick="startPayment()"
+        disabled
       >
-        Buy Data
+        Select a plan
       </button>
 
+      <div id="message" class="message"></div>
 
-      <div
-        id="message"
-        class="message"
-      ></div>
-
-    </div>
-
-
-    <div class="footer">
-      © 2026 NOVA. All rights reserved.
     </div>
 
   </div>
 
-
-  <script>
-
-    /*
-    |--------------------------------------------------------------------------
-    | NOVA CONFIGURATION
-    |--------------------------------------------------------------------------
-    */
-
-    const BACKEND_URL =
-      "https://nova-backend-fh5p.onrender.com";
-
-    /*
-    |--------------------------------------------------------------------------
-    | IMPORTANT
-    |--------------------------------------------------------------------------
-    |
-    | This is your Paystack TEST public key.
-    |
-    | Never put a Paystack SECRET KEY in this file.
-    |
-    */
-
-    const PAYSTACK_PUBLIC_KEY =
-      "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | STATE
-    |--------------------------------------------------------------------------
-    */
-
-    let selectedNetwork = null;
-
-    let selectedPlan = null;
-
-    let networkPlans = [];
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | ELEMENTS
-    |--------------------------------------------------------------------------
-    */
-
-    const bundlesElement =
-      document.getElementById("bundles");
-
-    const planCountElement =
-      document.getElementById("planCount");
-
-    const summaryNetwork =
-      document.getElementById("summaryNetwork");
-
-    const summaryBundle =
-      document.getElementById("summaryBundle");
-
-    const summaryDuration =
-      document.getElementById("summaryDuration");
-
-    const summaryAmount =
-      document.getElementById("summaryAmount");
-
-    const buyButton =
-      document.getElementById("buyButton");
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | MESSAGE
-    |--------------------------------------------------------------------------
-    */
-
-    function showMessage(text, type) {
-
-      const message =
-        document.getElementById("message");
-
-      message.textContent = text;
-
-      message.className =
-        "message show " + type;
-    }
-
-
-    function clearMessage() {
-
-      const message =
-        document.getElementById("message");
-
-      message.textContent = "";
-
-      message.className = "message";
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | FORMAT NAIRA
-    |--------------------------------------------------------------------------
-    */
-
-    function formatNaira(amount) {
-
-      return "₦" +
-        Number(amount).toLocaleString(
-          "en-NG"
-        );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | LOAD PLANS
-    |--------------------------------------------------------------------------
-    |
-    | Uses:
-    |
-    | GET /api/plans?network=MTN
-    |
-    | GET /api/plans?network=Glo
-    |
-    | GET /api/plans?network=Airtel
-    |
-    | GET /api/plans?network=9mobile
-    |
-    */
-
-    async function loadPlans(network) {
-
-      selectedPlan = null;
-
-      networkPlans = [];
-
-      summaryBundle.textContent =
-        "Not selected";
-
-      summaryDuration.textContent =
-        "-";
-
-      summaryAmount.textContent =
-        "₦0";
-
-
-      bundlesElement.innerHTML = `
-        <div class="loading-plans">
-          Loading ${network} plans...
-        </div>
-      `;
-
-      planCountElement.textContent =
-        "Loading...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            BACKEND_URL +
-            "/api/plans?network=" +
-            encodeURIComponent(network)
-          );
-
-
-        const data =
-          await response.json();
-
-
-        console.log(
-          "NOVA PLANS:",
-          data
-        );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.error ||
-            "Unable to load data plans."
-          );
-
-        }
-
-
-        if (
-          !data.success ||
-          !Array.isArray(data.plans)
-        ) {
-
-          throw new Error(
-            "Invalid plans response from NOVA backend."
-          );
-
-        }
-
-
-        networkPlans =
-          data.plans;
-
-
-        renderPlans();
-
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "PLAN LOAD ERROR:",
-          error
-        );
-
-
-        bundlesElement.innerHTML = `
-          <div class="empty-plans">
-            Unable to load plans.<br>
-            Please check your connection and try again.
-          </div>
-        `;
-
-        planCountElement.textContent =
-          "0 plans";
-
-        showMessage(
-          error.message ||
-          "Unable to load data plans.",
-          "error"
-        );
-
-      }
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | RENDER PLANS
-    |--------------------------------------------------------------------------
-    */
-
-    function renderPlans() {
-
-      bundlesElement.innerHTML = "";
-
-
-      if (!networkPlans.length) {
-
-        bundlesElement.innerHTML = `
-          <div class="empty-plans">
-            No plans available for ${selectedNetwork}.
-          </div>
-        `;
-
-        planCountElement.textContent =
-          "0 plans";
-
-        return;
-      }
-
-
-      planCountElement.textContent =
-        networkPlans.length +
-        " plans";
-
-
-      networkPlans.forEach(
-        function(plan, index) {
-
-          const button =
-            document.createElement("button");
-
-
-          button.type = "button";
-
-          button.className = "bundle";
-
-
-          button.innerHTML = `
-
-            <div class="bundle-name">
-              ${escapeHtml(plan.name)}
-            </div>
-
-            <div class="bundle-duration">
-              ${escapeHtml(plan.duration)}
-            </div>
-
-            <div class="bundle-price">
-              ${formatNaira(plan.price)}
-            </div>
-
-          `;
-
-
-          button.addEventListener(
-            "click",
-            function() {
-
-              selectPlan(
-                button,
-                plan,
-                index
-              );
-
-            }
-          );
-
-
-          bundlesElement.appendChild(
-            button
-          );
-
-        }
-      );
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SELECT PLAN
-    |--------------------------------------------------------------------------
-    */
-
-    function selectPlan(
-      element,
-      plan,
-      index
-    ) {
-
-      document
-        .querySelectorAll(".bundle")
-        .forEach(
-          function(button) {
-
-            button.classList.remove(
-              "selected"
-            );
-
-          }
-        );
-
-
-      element.classList.add(
-        "selected"
-      );
-
-
-      /*
-      | Keep the INDEX because the backend
-      | expects planIndex.
-      */
-
-      selectedPlan = {
-
-        index: index,
-
-        name: plan.name,
-
-        duration: plan.duration,
-
-        price: Number(plan.price),
-
-        productCode:
-          plan.productCode,
-
-        productId:
-          plan.productId
-
-      };
-
-
-      summaryBundle.textContent =
-        plan.name;
-
-
-      summaryDuration.textContent =
-        plan.duration;
-
-
-      summaryAmount.textContent =
-        formatNaira(plan.price);
-
-
-      clearMessage();
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SELECT NETWORK
-    |--------------------------------------------------------------------------
-    */
-
-    document
-      .querySelectorAll(".network")
-      .forEach(
-        function(button) {
-
-          button.addEventListener(
-            "click",
-            function() {
-
-              document
-                .querySelectorAll(".network")
-                .forEach(
-                  function(networkButton) {
-
-                    networkButton.classList.remove(
-                      "selected"
-                    );
-
-                  }
-                );
-
-
-              button.classList.add(
-                "selected"
-              );
-
-
-              selectedNetwork =
-                button.dataset.network;
-
-
-              summaryNetwork.textContent =
-                selectedNetwork;
-
-
-              loadPlans(
-                selectedNetwork
-              );
-
-            }
-          );
-
-        }
-      );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | BUY DATA
-    |--------------------------------------------------------------------------
-    */
-
-    buyButton.addEventListener(
-      "click",
-      buyBundle
-    );
-
-
-    async function buyBundle() {
-
-      clearMessage();
-
-
-      const email =
-        document
-          .getElementById("email")
-          .value
-          .trim();
-
-
-      const phone =
-        document
-          .getElementById("phone")
-          .value
-          .trim();
-
-
-      /*
-      |--------------------------------------------------------------------------
-      | VALIDATION
-      |--------------------------------------------------------------------------
-      */
-
-      if (!email) {
-
-        showMessage(
-          "Please enter your email address.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      if (!email.includes("@")) {
-
-        showMessage(
-          "Please enter a valid email address.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      if (!phone) {
-
-        showMessage(
-          "Please enter the phone number that should receive the data.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      const cleanPhone =
-        phone.replace(
-          /\D/g,
-          ""
-        );
-
-
-      if (
-        cleanPhone.length !== 11 ||
-        !cleanPhone.startsWith("0")
-      ) {
-
-        showMessage(
-          "Please enter a valid Nigerian phone number.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      if (!selectedNetwork) {
-
-        showMessage(
-          "Please select a network.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      if (!selectedPlan) {
-
-        showMessage(
-          "Please select a data plan.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      /*
-      |--------------------------------------------------------------------------
-      | CHECK PAYSTACK
-      |--------------------------------------------------------------------------
-      */
-
-      if (
-        typeof PaystackPop ===
-        "undefined"
-      ) {
-
-        showMessage(
-          "Paystack failed to load. Please refresh the page.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      buyButton.disabled = true;
-
-      buyButton.textContent =
-        "Creating order...";
-
-
-      showMessage(
-        "Creating your NOVA order...",
-        "loading"
-      );
-
-
-      try {
-
-        /*
-        |--------------------------------------------------------------------------
-        | CREATE ORDER
-        |--------------------------------------------------------------------------
-        |
-        | IMPORTANT:
-        |
-        | Your deployed backend expects:
-        |
-        | network
-        | phone
-        | planIndex
-        |
-        */
-
-        const orderResponse =
-          await fetch(
-            BACKEND_URL +
-            "/api/order",
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-
-                  network:
-                    selectedNetwork,
-
-                  phone:
-                    cleanPhone,
-
-                  planIndex:
-                    selectedPlan.index
-
-                })
-
-            }
-          );
-
-
-        const orderData =
-          await orderResponse.json();
-
-
-        console.log(
-          "NOVA ORDER RESPONSE:",
-          orderData
-        );
-
-
-        if (!orderResponse.ok) {
-
-          throw new Error(
-            orderData.error ||
-            "Unable to create NOVA order."
-          );
-
-        }
-
-
-        if (!orderData.success) {
-
-          throw new Error(
-            orderData.error ||
-            "Order creation failed."
-          );
-
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | ORDER CREATED
-        |----------------------------------------
+  <footer>
+    NOVA Data © 2026
+  </footer>
