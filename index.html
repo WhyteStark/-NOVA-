@@ -1080,3 +1080,40 @@
 
   /*
   ==============
+  VALIDATION
+  ==============
+*/
+  function isValidPhone(phone) {
+   let value =
+phone. replace (/\D/g, ""):
+   if (value. start sWith (" 234" ) ) { value = "0" + value.slice(3);
+}
+   if (
+value. length === 10 && value. startsWith ("8")
+){
+value = "0" + value;
+}
+   return /^0[789) [01]\d{8}$/. test(value);
+   
+   function isValidEmail(email) {
+return /^[A\s@] +@[^\s@]+\. [^\s@] +$/ . test (email) :
+}
+/*
+HTML ESCAPE
+*/
+function escapeHtml (va lue) {
+  return String(value)
+  
+replace (/&/g, "&amp; ") 
+  .replace(/</g, "&lt; ") 
+  .replace (/> /g, " &gt; ") 
+  .replace(/" /g, "&quot;") 
+  .replace(/' /g. " &#039;") :
+/*
+START
+*|
+updateSummary(0:
+handlePaymen tReturn ();
+</script>
+</body>
+</html>
