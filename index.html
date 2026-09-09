@@ -401,3 +401,409 @@
   <footer>
     NOVA Data © 2026
   </footer>
+<script>
+  const BACKEND_URL =
+    "https://nova-backend-fh5p.onrender.com";
+
+  const PAYSTACK_PUBLIC_KEY =
+    "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
+
+  let selectedNetwork = "MTN";
+  let selectedPlan = null;
+  let plansCache = {};
+
+  const plansContainer =
+    document.getElementById("plans");
+
+  const buyButton =
+    document.getElementById("buyButton");
+
+  const messageBox =
+    document.getElementById("message");
+
+  const backendStatus =
+    document.getElementById("backendStatus");
+
+  const summary =
+    document.getElementById("summary");
+
+
+  function showMessage(text, type) {
+
+    messageBox.textContent = text;
+
+    messageBox.className =
+      "message show " + type;
+  }
+
+
+  function clearMessage() {
+
+    messageBox.textContent = "";
+
+    messageBox.className = "message";
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  async function checkBackend() {
+
+    try {
+
+      const response =
+        await fetch(
+          BACKEND_URL + "/api/health"
+        );
+
+      if (!response.ok) {
+        throw new Error("Backend offline");
+      }
+
+      const data =
+        await response.json();
+
+      if (data.success) {
+
+        backendStatus.textContent =
+          "🟢 NOVA server online";
+
+        backendStatus.style.color =
+          "#6ff0b0";
+
+      } else {
+
+        throw new Error("Backend error");
+      }
+
+    } catch (error) {
+
+      backendStatus.textContent =
+        "🔴 NOVA server unavailable";
+
+      backendStatus.style.color =
+        "#ff9999";
+
+      console.error(
+        "Backend error:",
+        error
+      );
+    }
+  }
+
+
+  async function selectNetwork(network) {
+
+    selectedNetwork = network;
+    selectedPlan = null;
+
+    clearMessage();
+
+    summary.classList.remove("show");
+
+    buyButton.disabled = true;
+    buyButton.textContent = "Select a plan";
+
+
+    document
+      .querySelectorAll(".network-btn")
+      .forEach(button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.network === network
+        );
+
+      });
+
+
+    plansContainer.innerHTML = `
+      <div class="loading">
+        Loading ${escapeHtml(network)} plans...
+      </div>
+    `;
+
+
+    try {
+
+      if (plansCache[network]) {
+
+        renderPlans(
+          plansCache[network]
+        );
+
+        return;
+      }
+
+
+      const response =
+        await fetch(
+          BACKEND_URL +
+          "/api/plans?network=" +
+          encodeURIComponent(network)
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Unable to load plans"
+        );
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data.success ||
+        !Array.isArray(data.plans)
+      ) {
+
+        throw new Error(
+          "Invalid plans response"
+        );
+      }
+
+
+      plansCache[network] =
+        data.plans;
+
+
+      renderPlans(data.plans);
+
+    } catch (error) {
+
+      console.error(
+        "Plans error:",
+        error
+      );
+
+      plansContainer.innerHTML = `
+        <div class="loading">
+          ❌ Unable to load ${escapeHtml(network)} plans.
+          <br><br>
+          Please refresh the page.
+        </div>
+      `;
+    }
+  }
+
+
+  function renderPlans(plans) {
+
+    if (!plans || plans.length === 0) {
+
+      plansContainer.innerHTML = `
+        <div class="loading">
+          No data plans available.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    plansContainer.innerHTML =
+      plans.map((plan, index) => {
+
+        return `
+          <div
+            class="plan"
+            data-index="${index}"
+            onclick="selectPlan(${index})"
+          >
+
+            <div class="plan-name">
+              ${escapeHtml(plan.name)}
+            </div>
+
+            <div class="plan-duration">
+              ${escapeHtml(plan.duration)}
+            </div>
+
+            <div class="plan-price">
+              ₦${Number(plan.price).toLocaleString()}
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+  }
+
+
+  function selectPlan(index) {
+
+    const plans =
+      plansCache[selectedNetwork];
+
+    if (!plans || !plans[index]) {
+
+      showMessage(
+        "Invalid data plan selected.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    selectedPlan = {
+      index: index,
+      ...plans[index]
+    };
+
+
+    document
+      .querySelectorAll(".plan")
+      .forEach(plan => {
+
+        plan.classList.toggle(
+          "selected",
+          Number(plan.dataset.index) === index
+        );
+
+      });
+
+
+    const phone =
+      document
+        .getElementById("phone")
+        .value.trim();
+
+
+    document.getElementById(
+      "summaryNetwork"
+    ).textContent =
+      selectedNetwork;
+
+
+    document.getElementById(
+      "summaryPhone"
+    ).textContent =
+      phone || "Not entered";
+
+
+    document.getElementById(
+      "summaryBundle"
+    ).textContent =
+      selectedPlan.name;
+
+
+    document.getElementById(
+      "summaryDuration"
+    ).textContent =
+      selectedPlan.duration;
+
+
+    document.getElementById(
+      "summaryPrice"
+    ).textContent =
+      "₦" +
+      Number(selectedPlan.price)
+        .toLocaleString();
+
+
+    summary.classList.add("show");
+
+
+    buyButton.disabled = false;
+
+    buyButton.textContent =
+      "Pay ₦" +
+      Number(selectedPlan.price)
+        .toLocaleString();
+  }
+
+
+  document
+    .getElementById("phone")
+    .addEventListener(
+      "input",
+      function() {
+
+        if (selectedPlan) {
+
+          document.getElementById(
+            "summaryPhone"
+          ).textContent =
+            this.value.trim();
+        }
+
+      }
+    );
+
+
+  function normalizePhone(phone) {
+
+    let value =
+      String(phone)
+        .replace(/\D/g, "");
+
+
+    if (value.startsWith("234")) {
+
+      value =
+        "0" + value.substring(3);
+    }
+
+
+    return value;
+  }
+
+
+  async function createOrder(phone) {
+
+    const response =
+      await fetch(
+        BACKEND_URL + "/api/order",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            network:
+              selectedNetwork,
+
+            phone:
+              phone,
+
+            planIndex:
+              selectedPlan.index
+
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.success) {
+
+      throw new Error(
+        data.error ||
+        "Unable to create order"
+      );
+    }
+
+
+    return data.order;
+  }
