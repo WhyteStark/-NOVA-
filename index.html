@@ -1,7 +1,492 @@
 
 
 
+  <script>
 
+    /*
+    |--------------------------------------------------------------------------
+    | NOVA CONFIGURATION
+    |--------------------------------------------------------------------------
+    */
+
+    const BACKEND_URL =
+      "https://nova-backend-fh5p.onrender.com";
+
+    const PAYSTACK_PUBLIC_KEY =
+      "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATE
+    |--------------------------------------------------------------------------
+    */
+
+    let selectedNetwork = null;
+
+    let selectedPlan = null;
+
+    let selectedPlanIndex = null;
+
+    let networkPlans = [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FORMAT NAIRA
+    |--------------------------------------------------------------------------
+    */
+
+    function formatNaira(amount) {
+
+      return "₦" +
+        Number(amount || 0).toLocaleString(
+          "en-NG"
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MESSAGE
+    |--------------------------------------------------------------------------
+    */
+
+    function showMessage(text, type) {
+
+      const message =
+        document.getElementById("message");
+
+      message.textContent = text;
+
+      message.className =
+        "message show " + type;
+
+    }
+
+
+    function clearMessage() {
+
+      const message =
+        document.getElementById("message");
+
+      message.textContent = "";
+
+      message.className = "message";
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SELECT NETWORK
+    |--------------------------------------------------------------------------
+    */
+
+    async function selectNetwork(
+      element,
+      network
+    ) {
+
+      document
+        .querySelectorAll(".network")
+        .forEach(function(button) {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        });
+
+
+      element.classList.add("selected");
+
+
+      selectedNetwork =
+        network;
+
+
+      selectedPlan =
+        null;
+
+
+      selectedPlanIndex =
+        null;
+
+
+      networkPlans =
+        [];
+
+
+      document.getElementById(
+        "summaryNetwork"
+      ).textContent =
+        network;
+
+
+      document.getElementById(
+        "summaryBundle"
+      ).textContent =
+        "Not selected";
+
+
+      document.getElementById(
+        "summaryDuration"
+      ).textContent =
+        "Not selected";
+
+
+      document.getElementById(
+        "summaryAmount"
+      ).textContent =
+        "₦0";
+
+
+      await loadPlans(network);
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD PLANS FROM DEPLOYED BACKEND
+    |--------------------------------------------------------------------------
+    |
+    | This is the important part.
+    |
+    | The frontend does NOT hard-code the plans.
+    |
+    | It loads them from:
+    |
+    | https://nova-backend-fh5p.onrender.com/api/plans
+    |
+    |--------------------------------------------------------------------------
+    */
+
+    async function loadPlans(network) {
+
+      const plansContainer =
+        document.getElementById("plans");
+
+
+      plansContainer.innerHTML =
+        '<div class="plans-empty">Loading plans...</div>';
+
+
+      showMessage(
+        "Loading " + network + " data plans...",
+        "loading"
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            BACKEND_URL +
+            "/api/plans?network=" +
+            encodeURIComponent(network)
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "Backend returned HTTP " +
+            response.status
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        console.log(
+          "NOVA PLANS RESPONSE:",
+          data
+        );
+
+
+        if (
+          !data.success ||
+          !Array.isArray(data.plans)
+        ) {
+
+          throw new Error(
+            "No valid plans were returned by NOVA."
+          );
+
+        }
+
+
+        networkPlans =
+          data.plans;
+
+
+        renderPlans(
+          networkPlans
+        );
+
+
+        clearMessage();
+
+      }
+
+      catch(error) {
+
+        console.error(
+          "PLAN LOADING ERROR:",
+          error
+        );
+
+
+        plansContainer.innerHTML =
+          '<div class="plans-empty">' +
+          'Unable to load plans.<br><br>' +
+          'Please try again.' +
+          '</div>';
+
+
+        showMessage(
+          "Could not load " +
+          network +
+          " plans. Check that the NOVA backend is online.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER PLANS
+    |--------------------------------------------------------------------------
+    */
+
+    function renderPlans(plans) {
+
+      const container =
+        document.getElementById("plans");
+
+
+      container.innerHTML = "";
+
+
+      if (!plans.length) {
+
+        container.innerHTML =
+          '<div class="plans-empty">' +
+          'No plans available for this network.' +
+          '</div>';
+
+        return;
+
+      }
+
+
+      plans.forEach(
+        function(plan, index) {
+
+          const button =
+            document.createElement("button");
+
+
+          button.type =
+            "button";
+
+
+          button.className =
+            "plan";
+
+
+          button.onclick =
+            function() {
+
+              selectPlan(
+                button,
+                plan,
+                index
+              );
+
+            };
+
+
+          const name =
+            document.createElement("div");
+
+          name.className =
+            "plan-name";
+
+          name.textContent =
+            plan.name;
+
+
+          const duration =
+            document.createElement("div");
+
+          duration.className =
+            "plan-duration";
+
+          duration.textContent =
+            plan.duration;
+
+
+          const price =
+            document.createElement("div");
+
+          price.className =
+            "plan-price";
+
+          price.textContent =
+            formatNaira(
+              plan.price
+            );
+
+
+          button.appendChild(name);
+
+          button.appendChild(duration);
+
+          button.appendChild(price);
+
+
+          container.appendChild(button);
+
+        }
+      );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SELECT PLAN
+    |--------------------------------------------------------------------------
+    */
+
+    function selectPlan(
+      element,
+      plan,
+      index
+    ) {
+
+      document
+        .querySelectorAll(".plan")
+        .forEach(function(button) {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        });
+
+
+      element.classList.add(
+        "selected"
+      );
+
+
+      selectedPlan =
+        plan;
+
+
+      /*
+      |--------------------------------------------------------------------------
+      | VERY IMPORTANT
+      |
+      | This index matches the backend DATA_PLANS[network][index].
+      |--------------------------------------------------------------------------
+      */
+
+      selectedPlanIndex =
+        index;
+
+
+      document.getElementById(
+        "summaryNetwork"
+      ).textContent =
+        selectedNetwork;
+
+
+      document.getElementById(
+        "summaryBundle"
+      ).textContent =
+        plan.name;
+
+
+      document.getElementById(
+        "summaryDuration"
+      ).textContent =
+        plan.duration;
+
+
+      document.getElementById(
+        "summaryAmount"
+      ).textContent =
+        formatNaira(
+          plan.price
+        );
+
+
+      clearMessage();
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CHECK BACKEND
+    |--------------------------------------------------------------------------
+    */
+
+    async function checkBackend() {
+
+      try {
+
+        const response =
+          await fetch(
+            BACKEND_URL +
+            "/api/health"
+          );
+
+
+        const data =
+          await response.json();
+
+
+        console.log(
+          "NOVA BACKEND:",
+          data
+        );
+
+      }
+
+      catch(error) {
+
+        console.error(
+          "NOVA BACKEND CONNECTION ERROR:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | INITIAL BACKEND CHECK
+    |--------------------------------------------------------------------------
+    */
+
+    checkBackend();
+
+</script>
 
 
 
