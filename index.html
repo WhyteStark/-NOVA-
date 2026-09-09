@@ -1,809 +1,522 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
 
-  <title>NOVA Data</title>
 
-  <!-- Paystack -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #07111f;
-      color: #ffffff;
-      min-height: 100vh;
-    }
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
 
-    header {
-      text-align: center;
-      padding: 25px 10px;
-    }
 
-    .logo {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: #35e0ff;
-    }
 
-    .subtitle {
-      color: #9db0c5;
-      margin-top: 6px;
-      font-size: 14px;
-    }
-
-    .status {
-      margin: 15px auto;
-      padding: 10px 14px;
-      border-radius: 10px;
-      background: #0d1c2e;
-      color: #9db0c5;
-      text-align: center;
-      font-size: 13px;
-      max-width: 500px;
-    }
-
-    .card {
-      background: #0c1928;
-      border: 1px solid #19324b;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-
-    h2 {
-      margin-bottom: 15px;
-      font-size: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 7px;
-      color: #a9bdd1;
-      font-size: 14px;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #29445e;
-      background: #081522;
-      color: #ffffff;
-      outline: none;
-      font-size: 15px;
-      margin-bottom: 15px;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #35e0ff;
-    }
-
-    .networks {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .network-btn {
-      padding: 13px 8px;
-      border: 1px solid #29445e;
-      border-radius: 10px;
-      background: #081522;
-      color: white;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .network-btn:hover {
-      border-color: #35e0ff;
-    }
-
-    .network-btn.active {
-      background: #35e0ff;
-      color: #031019;
-      border-color: #35e0ff;
-    }
-
-    .plans {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .plan {
-      border: 1px solid #243e57;
-      background: #091624;
-      border-radius: 14px;
-      padding: 15px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .plan:hover {
-      transform: translateY(-2px);
-      border-color: #35e0ff;
-    }
-
-    .plan.selected {
-      border-color: #35e0ff;
-      box-shadow: 0 0 0 1px #35e0ff;
-    }
-
-    .plan-name {
-      font-size: 19px;
-      font-weight: 800;
-    }
-
-    .plan-duration {
-      color: #8ea4b8;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .plan-price {
-      color: #35e0ff;
-      font-size: 18px;
-      font-weight: 800;
-      margin-top: 10px;
-    }
-
-    .buy-btn {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 12px;
-      background: #35e0ff;
-      color: #031019;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    .buy-btn:hover {
-      opacity: 0.9;
-    }
-
-    .buy-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .message {
-      display: none;
-      padding: 13px;
-      border-radius: 10px;
-      margin-top: 15px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.success {
-      background: #0d3525;
-      color: #6ff0b0;
-      border: 1px solid #1d6c49;
-    }
-
-    .message.error {
-      background: #3a1515;
-      color: #ff9999;
-      border: 1px solid #742b2b;
-    }
-
-    .loading {
-      text-align: center;
-      color: #8ea4b8;
-      padding: 25px;
-    }
-
-    .summary {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      background: #081522;
-      border-radius: 12px;
-      border: 1px solid #1c344b;
-    }
-
-    .summary.show {
-      display: block;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 8px 0;
-      border-bottom: 1px solid #172b3e;
-    }
-
-    .summary-row:last-child {
-      border-bottom: none;
-    }
-
-    .summary-label {
-      color: #8ea4b8;
-    }
-
-    .summary-value {
-      font-weight: 700;
-      text-align: right;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px 10px;
-      color: #657b90;
-      font-size: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .networks {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .plans {
-        grid-template-columns: 1fr;
-      }
-
-      .logo {
-        font-size: 29px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-
-    <header>
-      <div class="logo">NOVA</div>
-      <div class="subtitle">Fast & Reliable Nigerian Data</div>
-
-      <div id="backendStatus" class="status">
-        Connecting to NOVA server...
-      </div>
-    </header>
-
-    <div class="card">
-
-      <h2>📱 Buy Data</h2>
-
-      <label for="phone">Phone Number</label>
-
-      <input
-        type="tel"
-        id="phone"
-        placeholder="08012345678"
-        maxlength="11"
-      >
-
-      <label>Choose Network</label>
-
-      <div class="networks">
-
-        <button
-          class="network-btn active"
-          data-network="MTN"
-          onclick="selectNetwork('MTN')"
-        >
-          MTN
-        </button>
-
-        <button
-          class="network-btn"
-          data-network="Glo"
-          onclick="selectNetwork('Glo')"
-        >
-          Glo
-        </button>
-
-        <button
-          class="network-btn"
-          data-network="Airtel"
-          onclick="selectNetwork('Airtel')"
-        >
-          Airtel
-        </button>
-
-        <button
-          class="network-btn"
-          data-network="9mobile"
-          onclick="selectNetwork('9mobile')"
-        >
-          9mobile
-        </button>
-
-      </div>
-
-      <label>Choose Data Plan</label>
-
-      <div id="plans" class="plans">
-        <div class="loading">
-          Loading MTN plans...
-        </div>
-      </div>
-
-      <div id="summary" class="summary">
-
-        <div class="summary-row">
-          <span class="summary-label">Network</span>
-          <span class="summary-value" id="summaryNetwork">-</span>
-        </div>
-
-        <div class="summary-row">
-          <span class="summary-label">Phone</span>
-          <span class="summary-value" id="summaryPhone">-</span>
-        </div>
-
-        <div class="summary-row">
-          <span class="summary-label">Bundle</span>
-          <span class="summary-value" id="summaryBundle">-</span>
-        </div>
-
-        <div class="summary-row">
-          <span class="summary-label">Duration</span>
-          <span class="summary-value" id="summaryDuration">-</span>
-        </div>
-
-        <div class="summary-row">
-          <span class="summary-label">Price</span>
-          <span class="summary-value" id="summaryPrice">-</span>
-        </div>
-
-      </div>
-
-      <button
-        id="buyButton"
-        class="buy-btn"
-        onclick="startPayment()"
-        disabled
-      >
-        Select a plan
-      </button>
-
-      <div id="message" class="message"></div>
-
-    </div>
-
-  </div>
-
-  <footer>
-    NOVA Data © 2026
-  </footer>
 <script>
-  const BACKEND_URL =
-    "https://nova-backend-fh5p.onrender.com";
 
-  const PAYSTACK_PUBLIC_KEY =
-    "pk_test_7ede74ad6f139b9b920adb0ae469613cffdd1f6f";
+    /*
+    |--------------------------------------------------------------------------
+    | BUY DATA
+    |--------------------------------------------------------------------------
+    */
 
-  let selectedNetwork = "MTN";
-  let selectedPlan = null;
-  let plansCache = {};
+    async function buyBundle() {
 
-  const plansContainer =
-    document.getElementById("plans");
-
-  const buyButton =
-    document.getElementById("buyButton");
-
-  const messageBox =
-    document.getElementById("message");
-
-  const backendStatus =
-    document.getElementById("backendStatus");
-
-  const summary =
-    document.getElementById("summary");
+      clearMessage();
 
 
-  function showMessage(text, type) {
-
-    messageBox.textContent = text;
-
-    messageBox.className =
-      "message show " + type;
-  }
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
 
 
-  function clearMessage() {
-
-    messageBox.textContent = "";
-
-    messageBox.className = "message";
-  }
-
-
-  function escapeHtml(value) {
-
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+      const phone =
+        document
+          .getElementById("phone")
+          .value
+          .trim();
 
 
-  async function checkBackend() {
-
-    try {
-
-      const response =
-        await fetch(
-          BACKEND_URL + "/api/health"
+      const button =
+        document.getElementById(
+          "buyButton"
         );
 
-      if (!response.ok) {
-        throw new Error("Backend offline");
-      }
 
-      const data =
-        await response.json();
+      /*
+      |--------------------------------------------------------------------------
+      | VALIDATION
+      |--------------------------------------------------------------------------
+      */
 
-      if (data.success) {
+      if (!email) {
 
-        backendStatus.textContent =
-          "🟢 NOVA server online";
-
-        backendStatus.style.color =
-          "#6ff0b0";
-
-      } else {
-
-        throw new Error("Backend error");
-      }
-
-    } catch (error) {
-
-      backendStatus.textContent =
-        "🔴 NOVA server unavailable";
-
-      backendStatus.style.color =
-        "#ff9999";
-
-      console.error(
-        "Backend error:",
-        error
-      );
-    }
-  }
-
-
-  async function selectNetwork(network) {
-
-    selectedNetwork = network;
-    selectedPlan = null;
-
-    clearMessage();
-
-    summary.classList.remove("show");
-
-    buyButton.disabled = true;
-    buyButton.textContent = "Select a plan";
-
-
-    document
-      .querySelectorAll(".network-btn")
-      .forEach(button => {
-
-        button.classList.toggle(
-          "active",
-          button.dataset.network === network
-        );
-
-      });
-
-
-    plansContainer.innerHTML = `
-      <div class="loading">
-        Loading ${escapeHtml(network)} plans...
-      </div>
-    `;
-
-
-    try {
-
-      if (plansCache[network]) {
-
-        renderPlans(
-          plansCache[network]
+        showMessage(
+          "Please enter your email address.",
+          "error"
         );
 
         return;
+
       }
 
 
-      const response =
-        await fetch(
-          BACKEND_URL +
-          "/api/plans?network=" +
-          encodeURIComponent(network)
+      if (!phone) {
+
+        showMessage(
+          "Please enter the phone number that should receive the data.",
+          "error"
         );
 
+        return;
 
-      if (!response.ok) {
-
-        throw new Error(
-          "Unable to load plans"
-        );
       }
 
 
-      const data =
-        await response.json();
+      if (!selectedNetwork) {
+
+        showMessage(
+          "Please select a network.",
+          "error"
+        );
+
+        return;
+
+      }
 
 
       if (
-        !data.success ||
-        !Array.isArray(data.plans)
+        selectedPlanIndex === null ||
+        !selectedPlan
       ) {
 
-        throw new Error(
-          "Invalid plans response"
+        showMessage(
+          "Please select a data plan.",
+          "error"
         );
+
+        return;
+
       }
 
 
-      plansCache[network] =
-        data.plans;
+      /*
+      |--------------------------------------------------------------------------
+      | PHONE VALIDATION
+      |--------------------------------------------------------------------------
+      */
+
+      const cleanPhone =
+        phone.replace(
+          /\D/g,
+          ""
+        );
 
 
-      renderPlans(data.plans);
+      if (
+        !/^0\d{10}$/.test(
+          cleanPhone
+        )
+      ) {
 
-    } catch (error) {
+        showMessage(
+          "Enter a valid Nigerian phone number, e.g. 08012345678.",
+          "error"
+        );
 
-      console.error(
-        "Plans error:",
-        error
-      );
+        return;
 
-      plansContainer.innerHTML = `
-        <div class="loading">
-          ❌ Unable to load ${escapeHtml(network)} plans.
-          <br><br>
-          Please refresh the page.
-        </div>
-      `;
-    }
-  }
+      }
 
 
-  function renderPlans(plans) {
+      /*
+      |--------------------------------------------------------------------------
+      | LOCK BUTTON
+      |--------------------------------------------------------------------------
+      */
 
-    if (!plans || plans.length === 0) {
-
-      plansContainer.innerHTML = `
-        <div class="loading">
-          No data plans available.
-        </div>
-      `;
-
-      return;
-    }
+      button.disabled =
+        true;
 
 
-    plansContainer.innerHTML =
-      plans.map((plan, index) => {
+      button.textContent =
+        "Creating order...";
 
-        return `
-          <div
-            class="plan"
-            data-index="${index}"
-            onclick="selectPlan(${index})"
-          >
-
-            <div class="plan-name">
-              ${escapeHtml(plan.name)}
-            </div>
-
-            <div class="plan-duration">
-              ${escapeHtml(plan.duration)}
-            </div>
-
-            <div class="plan-price">
-              ₦${Number(plan.price).toLocaleString()}
-            </div>
-
-          </div>
-        `;
-
-      }).join("");
-  }
-
-
-  function selectPlan(index) {
-
-    const plans =
-      plansCache[selectedNetwork];
-
-    if (!plans || !plans[index]) {
 
       showMessage(
-        "Invalid data plan selected.",
-        "error"
+        "Creating your NOVA order...",
+        "loading"
       );
 
-      return;
-    }
+
+      try {
+
+        /*
+        |--------------------------------------------------------------------------
+        | CREATE ORDER
+        |--------------------------------------------------------------------------
+        |
+        | IMPORTANT:
+        |
+        | Your deployed server expects:
+        |
+        | network
+        | phone
+        | planIndex
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        const orderResponse =
+          await fetch(
+            BACKEND_URL +
+            "/api/order",
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  network:
+                    selectedNetwork,
+
+                  phone:
+                    cleanPhone,
+
+                  planIndex:
+                    selectedPlanIndex
+
+                })
+
+            }
+          );
 
 
-    selectedPlan = {
-      index: index,
-      ...plans[index]
-    };
+        const orderData =
+          await orderResponse.json();
 
 
-    document
-      .querySelectorAll(".plan")
-      .forEach(plan => {
-
-        plan.classList.toggle(
-          "selected",
-          Number(plan.dataset.index) === index
+        console.log(
+          "NOVA ORDER:",
+          orderData
         );
 
-      });
 
+        if (!orderResponse.ok) {
 
-    const phone =
-      document
-        .getElementById("phone")
-        .value.trim();
+          throw new Error(
+            orderData.error ||
+            "Unable to create order."
+          );
 
-
-    document.getElementById(
-      "summaryNetwork"
-    ).textContent =
-      selectedNetwork;
-
-
-    document.getElementById(
-      "summaryPhone"
-    ).textContent =
-      phone || "Not entered";
-
-
-    document.getElementById(
-      "summaryBundle"
-    ).textContent =
-      selectedPlan.name;
-
-
-    document.getElementById(
-      "summaryDuration"
-    ).textContent =
-      selectedPlan.duration;
-
-
-    document.getElementById(
-      "summaryPrice"
-    ).textContent =
-      "₦" +
-      Number(selectedPlan.price)
-        .toLocaleString();
-
-
-    summary.classList.add("show");
-
-
-    buyButton.disabled = false;
-
-    buyButton.textContent =
-      "Pay ₦" +
-      Number(selectedPlan.price)
-        .toLocaleString();
-  }
-
-
-  document
-    .getElementById("phone")
-    .addEventListener(
-      "input",
-      function() {
-
-        if (selectedPlan) {
-
-          document.getElementById(
-            "summaryPhone"
-          ).textContent =
-            this.value.trim();
         }
+
+
+        if (
+          !orderData.success
+        ) {
+
+          throw new Error(
+            orderData.error ||
+            "Order creation failed."
+          );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ORDER CREATED
+        |--------------------------------------------------------------------------
+        */
+
+        const requestId =
+          orderData.order &&
+          orderData.order.requestId
+            ? orderData.order.requestId
+            : "";
+
+
+        showMessage(
+          "Order created. Opening secure payment...",
+          "loading"
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAYSTACK CHECK
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+          typeof PaystackPop ===
+          "undefined"
+        ) {
+
+          throw new Error(
+            "Paystack could not be loaded."
+          );
+
+        }
+
+
+        button.textContent =
+          "Opening payment...";
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAYSTACK
+        |--------------------------------------------------------------------------
+        */
+
+        const handler =
+          PaystackPop.setup({
+
+            key:
+              PAYSTACK_PUBLIC_KEY,
+
+            email:
+              email,
+
+            amount:
+              Number(
+                selectedPlan.price
+              ) * 100,
+
+            currency:
+              "NGN",
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PAYMENT CALLBACK
+            |--------------------------------------------------------------------------
+            */
+
+            callback:
+              async function(
+                response
+              ) {
+
+                console.log(
+                  "PAYSTACK REFERENCE:",
+                  response.reference
+                );
+
+
+                button.disabled =
+                  true;
+
+
+                button.textContent =
+                  "Verifying payment...";
+
+
+                showMessage(
+                  "Payment received. Verifying transaction...",
+                  "loading"
+                );
+
+
+                try {
+
+                  /*
+                  |--------------------------------------------------------------------------
+                  | VERIFY PAYMENT
+                  |--------------------------------------------------------------------------
+                  */
+
+                  const verifyResponse =
+                    await fetch(
+                      BACKEND_URL +
+                      "/api/verify-payment/" +
+                      encodeURIComponent(
+                        response.reference
+                      )
+                    );
+
+
+                  const verifyData =
+                    await verifyResponse.json();
+
+
+                  console.log(
+                    "PAYSTACK VERIFICATION:",
+                    verifyData
+                  );
+
+
+                  if (
+                    !verifyResponse.ok
+                  ) {
+
+                    throw new Error(
+                      verifyData.error ||
+                      "Payment verification failed."
+                    );
+
+                  }
+
+
+                  if (
+                    verifyData.status !==
+                    "success"
+                  ) {
+
+                    throw new Error(
+                      "Payment was not confirmed."
+                    );
+
+                  }
+
+
+                  /*
+                  |--------------------------------------------------------------------------
+                  | PAYMENT VERIFIED
+                  |--------------------------------------------------------------------------
+                  */
+
+                  showMessage(
+                    "Payment successful! Your " +
+                    selectedPlan.name +
+                    " order has been verified.",
+                    "success"
+                  );
+
+
+                  button.textContent =
+                    "Payment Successful";
+
+
+                  /*
+                  |--------------------------------------------------------------------------
+                  | IMPORTANT
+                  |
+                  | We stop here for now.
+                  |
+                  | Delivery should only happen after
+                  | successful server-side verification.
+                  |
+                  |--------------------------------------------------------------------------
+                  */
+
+                  console.log(
+                    "VERIFIED ORDER:",
+                    {
+                      requestId:
+                        requestId,
+
+                      network:
+                        selectedNetwork,
+
+                      phone:
+                        cleanPhone,
+
+                      planIndex:
+                        selectedPlanIndex,
+
+                      reference:
+                        response.reference
+                    }
+                  );
+
+                }
+
+                catch(error) {
+
+                  console.error(
+                    "VERIFICATION ERROR:",
+                    error
+                  );
+
+
+                  showMessage(
+                    error.message ||
+                    "Unable to verify payment.",
+                    "error"
+                  );
+
+
+                  button.disabled =
+                    false;
+
+
+                  button.textContent =
+                    "Buy Data";
+
+                }
+
+              },
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PAYSTACK CLOSED
+            |--------------------------------------------------------------------------
+            */
+
+            onClose:
+              function() {
+
+                console.log(
+                  "Paystack payment window closed."
+                );
+
+
+                button.disabled =
+                  false;
+
+
+                button.textContent =
+                  "Buy Data";
+
+
+                showMessage(
+                  "Payment window closed. No payment was completed.",
+                  "error"
+                );
+
+              }
+
+          });
+
+
+        handler.openIframe();
 
       }
-    );
+
+      catch(error) {
+
+        console.error(
+          "NOVA PURCHASE ERROR:",
+          error
+        );
 
 
-  function normalizePhone(phone) {
+        showMessage(
+          error.message ||
+          "Something went wrong. Please try again.",
+          "error"
+        );
 
-    let value =
-      String(phone)
-        .replace(/\D/g, "");
+
+        button.disabled =
+          false;
 
 
-    if (value.startsWith("234")) {
+        button.textContent =
+          "Buy Data";
 
-      value =
-        "0" + value.substring(3);
+      }
+
     }
 
+  </script>
 
-    return value;
-  }
-
-
-  async function createOrder(phone) {
-
-    const response =
-      await fetch(
-        BACKEND_URL + "/api/order",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-
-            network:
-              selectedNetwork,
-
-            phone:
-              phone,
-
-            planIndex:
-              selectedPlan.index
-
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok || !data.success) {
-
-      throw new Error(
-        data.error ||
-        "Unable to create order"
-      );
-    }
-
-
-    return data.order;
-  }
+</body>
+</html>
