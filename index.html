@@ -1102,20 +1102,12 @@ if (Array.isArray(data.plans)) {
                   "application/json"
               },
 
-              body:
-                JSON.stringify({
-
-                  network:
-                    selectedNetwork,
-
-                  phone:
-                    cleanPhone,
-
-                  planIndex:
-                    selectedPlanIndex
-
-                })
-
+              body: JSON.stringify({
+                network: selectedNetwork,
+                phone: cleanPhone,
+                email: email,
+                planIndex: selectedPlanIndex
+              })
             }
           );
 
