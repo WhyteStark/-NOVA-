@@ -649,20 +649,17 @@
         );
 
 
-        if (
-          !data.success ||
-          !Array.isArray(data.plans)
-        ) {
+if (
+  !data.success ||
+  !data.plans ||
+  !Array.isArray(data.plans[network])
+) {
+  throw new Error(
+    "No valid plans were returned for " + network + "."
+  );
+}
 
-          throw new Error(
-            "No valid plans were returned by NOVA."
-          );
-
-        }
-
-
-        networkPlans =
-          data.plans;
+networkPlans = data.plans[network];
 
 
         renderPlans(
