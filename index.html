@@ -1124,20 +1124,20 @@ if (Array.isArray(data.plans)) {
 
 
         if (!orderResponse.ok) {
-          throw new Error(
-            orderData.message ||
-            orderData.error ||
-            "Unable to create order."
-          );
-        }
-        
-        if (!orderData.success) {
-          throw new Error(
-            orderData.message ||
-            orderData.error ||
-            "Order creation failed."
-          );
-        }
+  throw new Error(
+    orderData.message ||
+    orderData.error ||
+    "Unable to create order."
+  );
+}
+
+if (!orderData.success) {
+  throw new Error(
+    orderData.message ||
+    orderData.error ||
+    "Order creation failed."
+  );
+}
 
         }
 
