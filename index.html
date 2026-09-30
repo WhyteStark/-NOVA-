@@ -942,7 +942,6 @@ if (Array.isArray(data.plans)) {
 
     async function buyBundle() {
       console.log("BUY DATA BUTTON CLICKED");
-      alert("buyBundle() STARTED");
       
       clearMessage();
 
@@ -1038,10 +1037,11 @@ if (Array.isArray(data.plans)) {
 
 
       if (
-        !/^0\d{10}$/.test(
+        !/^0[789][01]\d{8}$/.test(
           cleanPhone
         )
-      ) {
+      )
+      {
 
         showMessage(
           "Enter a valid Nigerian phone number, e.g. 08012345678.",
@@ -1188,30 +1188,130 @@ if (!orderData.success) {
         |--------------------------------------------------------------------------
         */
 
-        const handler =
-          PaystackPop.setup({
+      if (
+  !orderData.payment ||
+  !orderData.payment.access_code
+) {
+  throw new Error(
+    "Paystack access code was not returned by the server."
+  );
+}
 
-            key:
-              PAYSTACK_PUBLIC_KEY,
+const paystack = new PaystackPop();
 
-            email:
-              email,
+paystack.resumeTransaction(
+  orderData.payment.access_code,
+  {
+    onSuccess: async function(response) {
 
-            amount:
-              Number(
-                selectedPlan.price
-              ) * 100,
+      console.log(
+        "PAYSTACK REFERENCE:",
+        response.reference
+      );
 
-            currency:
-              "NGN",
+      button.disabled = true;
+      button.textContent = "Verifying payment...";
 
+      showMessage(
+        "Payment received. Verifying transaction...",
+        "loading"
+      );
 
-            /*
-            |--------------------------------------------------------------------------
-            | PAYMENT CALLBACK
-            |--------------------------------------------------------------------------
-            */
+      try {
+        const verifyResponse = await fetch(
+          BACKEND_URL +
+          "/api/verify-payment/" +
+          encodeURIComponent(response.reference)
+        );
 
+        const verifyData =
+          await verifyResponse.json();
+
+        console.log(
+          "PAYSTACK VERIFICATION:",
+          verifyData
+        );
+
+        if (!verifyResponse.ok) {
+          throw new Error(
+            verifyData.message ||
+            verifyData.error ||
+            "Payment verification failed."
+          );
+        }
+
+        if (
+          !verifyData.success ||
+          !verifyData.paid
+        ) {
+          throw new Error(
+            verifyData.message ||
+            "Payment was not confirmed."
+          );
+        }
+
+        showMessage(
+          "Payment successful! Your " +
+          selectedPlan.name +
+          " order has been verified.",
+          "success"
+        );
+
+        button.textContent =
+          "Payment Successful";
+
+      } catch(error) {
+
+        console.error(
+          "VERIFICATION ERROR:",
+          error
+        );
+
+        showMessage(
+          error.message ||
+          "Unable to verify payment.",
+          "error"
+        );
+
+        button.disabled = false;
+        button.textContent = "Buy Data";
+      }
+    },
+
+    onCancel: function() {
+
+      console.log(
+        "Paystack payment window closed."
+      );
+
+      button.disabled = false;
+      button.textContent = "Buy Data";
+
+      showMessage(
+        "Payment window closed. No payment was completed.",
+        "error"
+      );
+    },
+
+    onError: function(error) {
+
+      console.error(
+        "PAYSTACK ERROR:",
+        error
+      );
+
+      button.disabled = false;
+      button.textContent = "Buy Data";
+
+      showMessage(
+        error && error.message
+          ? error.message
+          : "Unable to open Paystack payment.",
+        "error"
+      );
+    }
+  }
+);
             
 
       catch(error) {
